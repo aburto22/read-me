@@ -3,12 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    "airbnb",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/jsx-runtime",
-    "prettier",
-  ],
+  extends: ["airbnb", "plugin:@typescript-eslint/recommended", "prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
@@ -36,13 +31,6 @@ module.exports = {
       {
         ts: "never",
         tsx: "never",
-      },
-    ],
-    "react/function-component-definition": [
-      2,
-      {
-        namedComponents: "arrow-function",
-        unnamedComponents: "arrow-function",
       },
     ],
   },
