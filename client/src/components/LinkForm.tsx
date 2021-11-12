@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { addLink } from "../api/api";
 
 type LinkFormProps = {
   setLinks: (links: LinkT[]) => void;
@@ -8,18 +8,16 @@ type LinkFormProps = {
 const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
   const [link, setLink] = useState<string>("");
 
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    setLink(event.target.value);
+  const handleChange = (event: React.FormEvent<HTMLInputElement>): void => {
+    setLink(event.currentTarget.value);
   };
 
-  const handleSubmit: React.FormEventHandler = async (event) => {
+  const handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
-    const { data } = await axios.post("http://localhost:5000/new-link", {
-      link,
+    addLink(link).then((data) => {
+      setLink("");
+      setLinks(data.links);
     });
-
-    setLink("");
-    setLinks(data.links);
   };
 
   return (

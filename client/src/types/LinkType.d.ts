@@ -4,7 +4,7 @@ type LinkT = {
   link: string;
 };
 
-type ApiResponse = {
+type ApiResponseT = {
   message: string;
   link: LinkT;
   links: LinkT[];
