@@ -1,0 +1,25 @@
+{
+  "name": "read-me",
+  "version": "1.0.0",
+  "description": "Easy storage and management of your read list.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd api && npm run nodemon\" \"cd client && npm start\"",
+    "start": "cd api && npm start",
+    "heroku-postbuild": "(cd client && npm install && npm run build) && (cd api && npm install)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aburto22/read-me.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aburto22/read-me/issues"
+  },
+  "homepage": "https://github.com/aburto22/read-me#readme",
+  "dependencies": {
+    "concurrently": "^6.3.0"
+  }
+}
