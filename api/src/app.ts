@@ -1,18 +1,21 @@
-import express, { Express } from "express";
+import express, { Express, json, urlencoded } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import router from "./routes/routes";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import router from "./router/router";
 
 const app: Express = express();
+dotenv.config();
 
 app.use(cors());
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
+app.use(json());
+app.use(cookieParser());
+app.use(urlencoded({ extended: true }));
 
 app.use(router);
 
-const mongoUri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@clustertodo.raz9g.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
+const mongoUri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.nfrx7.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 
 mongoose.connect(mongoUri);
 mongoose.connection.on("error", (err) => console.error(err));
