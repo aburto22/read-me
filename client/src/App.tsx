@@ -1,21 +1,16 @@
 import { useState, useEffect } from "react";
 import LinkForm from "./components/LinkForm";
+import { getLinks } from "./api/api";
 
 const App = (): JSX.Element => {
-  const [links, setLinks] = useState<LinkT[]>([]);
+  const [links, setLinks] = useState<ILink[]>([]);
 
   useEffect(() => {
-    const link: LinkT = {
-      name: "freeCodeCamp",
-      description: "learn to program for free",
-      link: "https://www.freecodecamp.org/",
-    };
-
-    setLinks([link]);
+    getLinks().then((data) => setLinks(data));
   }, []);
 
   const LinksComponent = links.map((link) => (
-    <li key={link.name} className="border border-gray-300 p-2 rounded">
+    <li key={link._id} className="border border-gray-300 p-2 rounded">
       <p>{link.name}</p>
       <p>{link.description}</p>
       <a href={link.link}>{link.link}</a>

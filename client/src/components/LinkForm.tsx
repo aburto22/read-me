@@ -2,7 +2,7 @@ import { useState } from "react";
 import { addLink } from "../api/api";
 
 type LinkFormProps = {
-  setLinks: (links: LinkT[]) => void;
+  setLinks: (links: ILink[]) => void;
 };
 
 const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
@@ -16,7 +16,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
     event.preventDefault();
     addLink(link).then((data) => {
       setLink("");
-      setLinks(data.links);
+      setLinks(data);
     });
   };
 

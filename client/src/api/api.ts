@@ -1,9 +1,16 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-export const addLink = (link: string): Promise<ApiResponseT> =>
-  axios
-    .post<ApiResponseT>("http://localhost:5000/add-link", link)
-    .then(({ data }) => {
-      console.log("data: ", data);
-      return data;
-    });
+export const getLinks = (): Promise<ILink[]> =>
+  axios({
+    method: "get",
+    url: "/links",
+    baseURL: "http://localhost:5000",
+  }).then((res: AxiosResponse<ILink[]>) => res.data);
+
+export const addLink = (link: string): Promise<ILink[]> =>
+  axios({
+    method: "post",
+    url: "/links",
+    baseURL: "http://localhost:5000",
+    data: { link },
+  }).then((res: AxiosResponse<ILink[]>) => res.data);
