@@ -21,7 +21,10 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
   };
 
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit}>
+    <form
+      className="flex flex-col lg:fixed w-full max-w-sm"
+      onSubmit={handleSubmit}
+    >
       <label htmlFor="link" className="mb-4">
         <span className="block mb-2">Insert link:</span>
         <input
@@ -29,12 +32,12 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
           name="link"
           onChange={handleChange}
           value={link}
-          className="p-1 border border-gray-500 rounded w-80"
+          className="p-1 border border-gray-500 rounded w-full text-gray-primary"
         />
       </label>
       <button
         type="submit"
-        className="py-2 px-4 border border-gray-500 rounded bg-black text-white w-max mx-auto"
+        className="py-2 px-4 border border-gray-500 rounded bg-gray-dark text-white w-max mx-auto"
       >
         Create
       </button>

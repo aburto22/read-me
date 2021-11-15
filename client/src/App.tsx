@@ -41,26 +41,25 @@ const App = (): JSX.Element => {
     ));
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center lg:flex-row">
-      <div className="mb-8 lg:mb-0 lg:mr-8">
+    <div className="min-h-screen flex flex-col items-start justify-center lg:flex-row bg-gray-primary text-white px-2 w-full">
+      <div className="flex items-center mt-8 lg:mt-0 max-w-sm w-full mx-auto lg:mr-12 lg:ml-0 relative lg:h-screen">
         <LinkForm setLinks={setLinks} />
       </div>
-      <div className="flex flex-col items-center w-full max-w-md">
+      <div className="flex flex-col items-center max-w-full py-8 mx-auto lg:mx-0">
         <div className="mb-4">
-          <p className="font-bold text-center">Filters:</p>
-          <select name="filters" onChange={handleShow}>
-            <option value="all" selected={show === "all"}>
-              Show all
-            </option>
-            <option value="unread" selected={show === "unread"}>
-              Show unread
-            </option>
-            <option value="read" selected={show === "read"}>
-              Show read
-            </option>
+          <p className="font-bold text-center mb-2">Filters:</p>
+          <select
+            name="filters"
+            onChange={handleShow}
+            value={show}
+            className="text-gray-primary rounded px-1 text-sm"
+          >
+            <option value="all">Show all</option>
+            <option value="unread">Show unread</option>
+            <option value="read">Show read</option>
           </select>
         </div>
-        <ul>{LinksComponent}</ul>
+        <ul className="max-w-full">{LinksComponent}</ul>
       </div>
     </div>
   );

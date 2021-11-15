@@ -41,8 +41,13 @@ const ReadingLink = ({
   };
 
   return (
-    <li key={linkId} className="border border-gray-300 p-2 rounded flex">
-      <div className={`mr-2 relative flex-grow ${read && "bg-green-200"}`}>
+    <li
+      key={linkId}
+      className={`border border-gray-300 rounded flex mb-1 bg-gray-dark ${
+        read && "border-green-500"
+      }`}
+    >
+      <div className={`mr-2 relative flex-grow py-2 pl-3 `}>
         <h2 className="text-sm font-bold">
           {name.length > 40 ? `${name.slice(0, 40)}...` : name}
         </h2>
@@ -57,12 +62,16 @@ const ReadingLink = ({
           <div className="absolute inset-0" />
         </a>
         <p className="text-sm break-normal max-w-xs">
-          {description.length > 80
-            ? `${description.slice(0, 80)}...`
+          {description.length > 73
+            ? `${description.slice(0, 70)}...`
             : description}
         </p>
       </div>
-      <div className="flex flex-col justify-between items-center w-12">
+      <div
+        className={`flex flex-col justify-between items-center w-16 py-2 px-1 border-l ${
+          isRead ? "border-green-500" : "border-gray-300"
+        }`}
+      >
         <button type="button" onClick={handleDelete} className="">
           <Svg name="trash" className="h-5 w-5" />
         </button>
