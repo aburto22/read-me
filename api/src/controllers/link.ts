@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Links from "../models/Links";
 import { ILink, IDBUser, IDBLink } from "../types/global";
+import { getSiteInfo } from "../helpers/website";
 
 export const getLinks = async (
   req: Request,
@@ -24,9 +25,20 @@ export const addLink = async (
 ): Promise<Response<ILink[]>> => {
   const user = "user";
   const { link }: { link: string } = req.body;
+
+  const siteInfo = await getSiteInfo(link);
+
+  let name;
+  let description;
+
+  if (siteInfo.data) {
+    name = siteInfo.data.title;
+    description = siteInfo.data?.description;
+  }
+
   const newLink = {
-    name: "new link",
-    description: "some text",
+    name: name || "",
+    description: description || "",
     link,
   } as IDBLink;
 
