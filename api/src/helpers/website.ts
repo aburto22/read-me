@@ -6,10 +6,24 @@ interface IWebsiteResponse {
   data?: { title: string; description?: string };
 }
 
-export const getTitle = (site: string): string => {
-  const regex = /<title.*>(.*)<\/title>/;
+export const getHead = (site: string): string => {
+  const regex = /<head>[\s\S]*?<\/head>/;
 
   const match = site.match(regex);
+
+  if (!match) {
+    return "";
+  }
+
+  return match[0];
+};
+
+export const getTitle = (site: string): string => {
+  const head = getHead(site);
+
+  const regex = /<title[^<>]*>(.*)<\/title>/;
+
+  const match = head.match(regex);
 
   if (!match) {
     return "";
@@ -19,15 +33,17 @@ export const getTitle = (site: string): string => {
 };
 
 export const getDescription = (site: string): string => {
-  const regex = /<meta.*?name="[og:]?description".*?>/;
+  const head = getHead(site);
 
-  const match = site.match(regex);
+  const regex = /<meta[^<>]*?name="(?:og:)?description"[^<>]*?>/;
+
+  const match = head.match(regex);
 
   if (!match) {
     return "";
   }
 
-  const regex1 = /content="(.*)"/;
+  const regex1 = /content="(.*?)"/;
 
   const match1 = match[0].match(regex1);
 
@@ -42,16 +58,8 @@ export const getSiteInfo = async (link: string): Promise<IWebsiteResponse> => {
   try {
     const res = await axios.get<string>(link);
 
-    let title = getTitle(res.data);
-    let description = getDescription(res.data);
-
-    if (title.length > 40) {
-      title = `${title.slice(0, 40)}...`;
-    }
-
-    if (description.length > 40) {
-      description = `${description.slice(0, 40)}...`;
-    }
+    const title = getTitle(res.data);
+    const description = getDescription(res.data);
 
     return {
       data: { title, description },
