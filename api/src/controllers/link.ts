@@ -40,6 +40,7 @@ export const addLink = async (
     name: name || "",
     description: description || "",
     link,
+    isRead: false,
   } as IDBLink;
 
   const doc: IDBUser | null = await Links.findOne({ user }).exec();
@@ -70,6 +71,37 @@ export const deleteLink = async (
   }
 
   doc.links = doc.links.filter((link) => link._id.toString() !== linkId);
+
+  await doc.save();
+
+  return res.json(doc.links);
+};
+
+export const updateLink = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response<ILink[]>> => {
+  const user = "user";
+  const { linkId, bool }: { linkId: string; bool: boolean } = req.body;
+
+  const doc: IDBUser | null = await Links.findOne({ user }).exec();
+
+  if (!doc) {
+    return res.json([]);
+  }
+
+  doc.links = doc.links.map((link) => {
+    if (link._id.toString() === linkId) {
+      return {
+        name: link.name,
+        description: link.description,
+        link: link.link,
+        isRead: bool,
+      } as IDBLink;
+    }
+    return link;
+  });
 
   await doc.save();
 

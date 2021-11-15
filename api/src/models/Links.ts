@@ -8,6 +8,7 @@ const LinksSchema = new Schema<IDBUser>({
       link: { type: String, required: true },
       name: String,
       description: String,
+      isRead: { type: Boolean, default: false },
     },
   ],
 });

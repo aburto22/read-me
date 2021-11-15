@@ -17,6 +17,7 @@ const App = (): JSX.Element => {
       description={link.description}
       linkId={link._id}
       link={link.link}
+      isRead={link.isRead}
       setLinks={setLinks}
     />
   ));

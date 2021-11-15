@@ -22,3 +22,11 @@ export const deleteLink = (linkId: string): Promise<ILink[]> =>
     baseURL: "http://localhost:5000",
     data: { linkId },
   }).then((res: AxiosResponse<ILink[]>) => res.data);
+
+export const setReadLink = (linkId: string, bool: boolean): Promise<ILink[]> =>
+  axios({
+    method: "put",
+    url: "/links",
+    baseURL: "http://localhost:5000",
+    data: { linkId, bool },
+  }).then((res: AxiosResponse<ILink[]>) => res.data);
