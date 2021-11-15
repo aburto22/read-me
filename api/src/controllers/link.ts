@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Links from "../models/Links";
-import { ILink, IDBUser } from "../types/global";
+import { ILink, IDBUser, IDBLink } from "../types/global";
 
 export const getLinks = async (
   req: Request,
@@ -8,7 +8,7 @@ export const getLinks = async (
   next: NextFunction
 ): Promise<Response<ILink[]>> => {
   const user = "user";
-  const doc: IDBUser | null = await Links.findOne({ user });
+  const doc: IDBUser | null = await Links.findOne({ user }).exec();
 
   if (!doc) {
     return res.json([]);
@@ -23,20 +23,41 @@ export const addLink = async (
   next: NextFunction
 ): Promise<Response<ILink[]>> => {
   const user = "user";
-  const { link } = req.body;
-  const newLink: ILink = {
+  const { link }: { link: string } = req.body;
+  const newLink = {
     name: "new link",
     description: "some text",
     link,
-  };
+  } as IDBLink;
 
-  const doc: IDBUser | null = await Links.findOne({ user });
+  const doc: IDBUser | null = await Links.findOne({ user }).exec();
 
   if (!doc) {
     return res.json([]);
   }
 
   doc.links = [...doc.links, newLink];
+
+  await doc.save();
+
+  return res.json(doc.links);
+};
+
+export const deleteLink = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response<ILink[]>> => {
+  const user = "user";
+  const { linkId }: { linkId: string } = req.body;
+
+  const doc: IDBUser | null = await Links.findOne({ user }).exec();
+
+  if (!doc) {
+    return res.json([]);
+  }
+
+  doc.links = doc.links.filter((link) => link._id.toString() !== linkId);
 
   await doc.save();
 

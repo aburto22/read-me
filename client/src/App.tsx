@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import LinkForm from "./components/LinkForm";
 import { getLinks } from "./api/api";
+import ReadingLink from "./components/ReadingLink";
 
 const App = (): JSX.Element => {
   const [links, setLinks] = useState<ILink[]>([]);
@@ -10,11 +11,14 @@ const App = (): JSX.Element => {
   }, []);
 
   const LinksComponent = links.map((link) => (
-    <li key={link._id} className="border border-gray-300 p-2 rounded">
-      <p>{link.name}</p>
-      <p>{link.description}</p>
-      <a href={link.link}>{link.link}</a>
-    </li>
+    <ReadingLink
+      key={link._id}
+      name={link.name}
+      description={link.description}
+      linkId={link._id}
+      link={link.link}
+      setLinks={setLinks}
+    />
   ));
 
   return (

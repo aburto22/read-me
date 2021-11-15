@@ -14,3 +14,11 @@ export const addLink = (link: string): Promise<ILink[]> =>
     baseURL: "http://localhost:5000",
     data: { link },
   }).then((res: AxiosResponse<ILink[]>) => res.data);
+
+export const deleteLink = (linkId: string): Promise<ILink[]> =>
+  axios({
+    method: "delete",
+    url: "/links",
+    baseURL: "http://localhost:5000",
+    data: { linkId },
+  }).then((res: AxiosResponse<ILink[]>) => res.data);
