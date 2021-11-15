@@ -8,6 +8,9 @@ module.exports = {
           "primary": "#242424",
           "dark": "#1B1B1B",
         }
+      },
+      maxWidth: {
+        xxs: "14rem",
       }
     },
   },

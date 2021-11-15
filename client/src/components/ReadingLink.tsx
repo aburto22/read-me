@@ -40,6 +40,16 @@ const ReadingLink = ({
     setLinks(links);
   };
 
+  const nameShort = name.length > 33 ? `${name.slice(0, 30)}...` : name;
+  const descriptionShort =
+    description.length > 63 ? `${description.slice(0, 60)}...` : description;
+  const linkShort = link.length > 33 ? `${link.slice(0, 30)}...` : link;
+
+  const nameLong = name.length > 48 ? `${name.slice(0, 45)}...` : name;
+  const descriptionLong =
+    description.length > 83 ? `${description.slice(0, 80)}...` : description;
+  const linkLong = link.length > 48 ? `${link.slice(0, 45)}...` : link;
+
   return (
     <li
       key={linkId}
@@ -49,7 +59,8 @@ const ReadingLink = ({
     >
       <div className={`mr-2 relative flex-grow py-2 pl-3 `}>
         <h2 className="text-sm font-bold">
-          {name.length > 40 ? `${name.slice(0, 40)}...` : name}
+          <span className="sm:hidden">{nameShort}</span>
+          <span className="hidden sm:inline">{nameLong}</span>
         </h2>
         <a
           className="text-xs"
@@ -58,13 +69,13 @@ const ReadingLink = ({
           rel="noreferrer"
           onClick={handleClick}
         >
-          {link.length > 40 ? `${link.slice(0, 40)}...` : link}
+          <span className="sm:hidden">{linkShort}</span>
+          <span className="hidden sm:inline">{linkLong}</span>
           <div className="absolute inset-0" />
         </a>
-        <p className="text-sm break-normal max-w-xs">
-          {description.length > 73
-            ? `${description.slice(0, 70)}...`
-            : description}
+        <p className="text-sm break-normal max-w-xxs sm:max-w-xs">
+          <span className="sm:hidden">{descriptionShort}</span>
+          <span className="hidden sm:inline">{descriptionLong}</span>
         </p>
       </div>
       <div
