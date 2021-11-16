@@ -8,6 +8,7 @@ interface IReadingLinkParams {
   link: string;
   linkId: string;
   isRead: boolean;
+  image: string;
   setLinks: (links: ILink[]) => void;
 }
 
@@ -17,6 +18,7 @@ const ReadingLink = ({
   link,
   linkId,
   isRead,
+  image,
   setLinks,
 }: IReadingLinkParams): JSX.Element => {
   const [read, setRead] = useState(isRead);
@@ -45,10 +47,10 @@ const ReadingLink = ({
     description.length > 63 ? `${description.slice(0, 60)}...` : description;
   const linkShort = link.length > 33 ? `${link.slice(0, 30)}...` : link;
 
-  const nameLong = name.length > 48 ? `${name.slice(0, 45)}...` : name;
+  const nameLong = name.length > 38 ? `${name.slice(0, 35)}...` : name;
   const descriptionLong =
     description.length > 83 ? `${description.slice(0, 80)}...` : description;
-  const linkLong = link.length > 48 ? `${link.slice(0, 45)}...` : link;
+  const linkLong = link.length > 43 ? `${link.slice(0, 40)}...` : link;
 
   return (
     <li
@@ -57,26 +59,33 @@ const ReadingLink = ({
         read && "border-green-500"
       }`}
     >
-      <div className={`mr-2 relative flex-grow py-2 pl-3 `}>
-        <h2 className="text-sm font-bold">
-          <span className="sm:hidden">{nameShort}</span>
-          <span className="hidden sm:inline">{nameLong}</span>
-        </h2>
-        <a
-          className="text-xs"
-          href={link}
-          target="_blank"
-          rel="noreferrer"
-          onClick={handleClick}
-        >
-          <span className="sm:hidden">{linkShort}</span>
-          <span className="hidden sm:inline">{linkLong}</span>
-          <div className="absolute inset-0" />
-        </a>
-        <p className="text-sm break-normal max-w-xxs sm:max-w-xs">
-          <span className="sm:hidden">{descriptionShort}</span>
-          <span className="hidden sm:inline">{descriptionLong}</span>
-        </p>
+      <div className="flex relative">
+        <img
+          src={image}
+          alt="Nothing to display"
+          className="w-24 h-full object-cover rounded-l"
+        />
+        <div className="mr-2 flex-grow py-2 pl-3">
+          <h2 className="text-sm font-bold">
+            <span className="sm:hidden">{nameShort}</span>
+            <span className="hidden sm:inline">{nameLong}</span>
+          </h2>
+          <a
+            className="text-xs"
+            href={link}
+            target="_blank"
+            rel="noreferrer"
+            onClick={handleClick}
+          >
+            <span className="sm:hidden">{linkShort}</span>
+            <span className="hidden sm:inline">{linkLong}</span>
+            <div className="absolute inset-0" />
+          </a>
+          <p className="text-sm break-normal max-w-xxs sm:max-w-xs">
+            <span className="sm:hidden">{descriptionShort}</span>
+            <span className="hidden sm:inline">{descriptionLong}</span>
+          </p>
+        </div>
       </div>
       <div
         className={`flex flex-col justify-between items-center w-16 py-2 px-1 border-l ${

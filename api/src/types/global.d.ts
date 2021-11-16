@@ -5,6 +5,7 @@ declare interface ILink {
   description: string;
   link: string;
   isRead: boolean;
+  image: string;
 }
 
 declare interface IDBLink extends Document {
@@ -12,6 +13,7 @@ declare interface IDBLink extends Document {
   description: string;
   link: string;
   isRead: boolean;
+  image: string;
 }
 
 declare interface IDBUser extends Document {

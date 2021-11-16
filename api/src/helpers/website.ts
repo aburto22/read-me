@@ -3,7 +3,7 @@ import fs from "fs/promises";
 
 interface IWebsiteResponse {
   error?: { message: string };
-  data?: { title: string; description?: string };
+  data?: { title: string; description?: string; image?: string };
 }
 
 export const getHead = (site: string): string => {
@@ -54,15 +54,38 @@ export const getDescription = (site: string): string => {
   return match1[1];
 };
 
+export const getImageSrc = (site: string): string => {
+  const head = getHead(site);
+
+  const regex = /<meta[^<>]*?property="(?:og:)?image"[^<>]*?>/;
+
+  const match = head.match(regex);
+
+  if (!match) {
+    return "";
+  }
+
+  const regex1 = /content="(.*?)"/;
+
+  const match1 = match[0].match(regex1);
+
+  if (!match1) {
+    return "";
+  }
+
+  return match1[1];
+};
+
 export const getSiteInfo = async (link: string): Promise<IWebsiteResponse> => {
   try {
     const res = await axios.get<string>(link);
 
     const title = getTitle(res.data);
     const description = getDescription(res.data);
+    const image = getImageSrc(res.data);
 
     return {
-      data: { title, description },
+      data: { title, description, image },
     };
   } catch (err) {
     return {

@@ -74,4 +74,29 @@ describe("Test website helpers", () => {
 
     expect(response.data).toMatchObject(desiredOutput);
   });
+  test("It should retrieve link information: Jest using matchers", async () => {
+    const link = "https://jestjs.io/docs/using-matchers";
+    const response = await getSiteInfo(link);
+
+    const desiredOutput = {
+      title: "Using Matchers · Jest",
+      description:
+        "Jest uses &quot;matchers&quot; to let you test values in different ways. This document will introduce some commonly used matchers. For the full list, see the expect API doc.",
+    };
+
+    expect(response.data).toMatchObject(desiredOutput);
+  });
+  test("It should retrieve link information: TypeScript Handbook Narrowing", async () => {
+    const link =
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html";
+    const response = await getSiteInfo(link);
+
+    const desiredOutput = {
+      title: "TypeScript: Documentation - Narrowing",
+      description:
+        "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
+    };
+
+    expect(response.data).toMatchObject(desiredOutput);
+  });
 });

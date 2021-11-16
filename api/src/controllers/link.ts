@@ -30,15 +30,18 @@ export const addLink = async (
 
   let name;
   let description;
+  let image;
 
   if (siteInfo.data) {
     name = siteInfo.data.title;
     description = siteInfo.data?.description;
+    image = siteInfo.data?.image;
   }
 
   const newLink = {
     name: name || "",
     description: description || "",
+    image: image || "",
     link,
     isRead: false,
   } as IDBLink;

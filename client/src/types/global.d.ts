@@ -3,5 +3,6 @@ declare interface ILink {
   description: string;
   link: string;
   isRead: boolean;
+  image: string;
   _id: string;
 }

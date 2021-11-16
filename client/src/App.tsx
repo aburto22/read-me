@@ -36,6 +36,7 @@ const App = (): JSX.Element => {
         linkId={link._id}
         link={link.link}
         isRead={link.isRead}
+        image={link.image}
         setLinks={setLinks}
       />
     ));
