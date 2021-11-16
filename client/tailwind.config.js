@@ -7,6 +7,9 @@ module.exports = {
         gray: {
           "primary": "#242424",
           "dark": "#1B1B1B",
+        },
+        blue: {
+          "image": "#194bff",
         }
       },
       maxWidth: {

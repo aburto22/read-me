@@ -100,6 +100,7 @@ export const updateLink = async (
         name: link.name,
         description: link.description,
         link: link.link,
+        image: link.image,
         isRead: bool,
       } as IDBLink;
     }

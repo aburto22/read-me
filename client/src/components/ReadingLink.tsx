@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import { useState } from "react";
 import Svg from "./common/svg";
 import { deleteLink, setReadLink } from "../api/api";
@@ -60,15 +61,25 @@ const ReadingLink = ({
       }`}
     >
       <div className="flex relative">
-        <img
-          src={image}
-          alt="Nothing to display"
-          className="w-24 h-full object-cover rounded-l"
-        />
+        <div className="w-20 h-full rounded-l hidden sm:block bg-blue-image flex-shrink-0">
+          {image && (
+            <img
+              src={image}
+              alt="Read link cover"
+              className="object-cover rounded-l w-full h-full"
+            />
+          )}
+        </div>
         <div className="mr-2 flex-grow py-2 pl-3">
           <h2 className="text-sm font-bold">
-            <span className="sm:hidden">{nameShort}</span>
-            <span className="hidden sm:inline">{nameLong}</span>
+            <span
+              className="sm:hidden"
+              dangerouslySetInnerHTML={{ __html: nameShort }}
+            />
+            <span
+              className="hidden sm:inline"
+              dangerouslySetInnerHTML={{ __html: nameLong }}
+            />
           </h2>
           <a
             className="text-xs"
@@ -82,14 +93,20 @@ const ReadingLink = ({
             <div className="absolute inset-0" />
           </a>
           <p className="text-sm break-normal max-w-xxs sm:max-w-xs">
-            <span className="sm:hidden">{descriptionShort}</span>
-            <span className="hidden sm:inline">{descriptionLong}</span>
+            <span
+              className="sm:hidden"
+              dangerouslySetInnerHTML={{ __html: descriptionShort }}
+            />
+            <span
+              className="hidden sm:inline"
+              dangerouslySetInnerHTML={{ __html: descriptionLong }}
+            />
           </p>
         </div>
       </div>
       <div
-        className={`flex flex-col justify-between items-center w-16 py-2 px-1 border-l ${
-          isRead ? "border-green-500" : "border-gray-300"
+        className={`flex flex-col justify-between items-center w-14 py-2 px-1 border-l ml-auto flex-shrink-0 ${
+          read ? "border-green-500" : "border-gray-300"
         }`}
       >
         <button type="button" onClick={handleDelete} className="">

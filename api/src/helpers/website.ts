@@ -7,7 +7,7 @@ interface IWebsiteResponse {
 }
 
 export const getHead = (site: string): string => {
-  const regex = /<head>[\s\S]*?<\/head>/;
+  const regex = /<head\s*>[\s\S]*?<\/head>/;
 
   const match = site.match(regex);
 
@@ -83,6 +83,8 @@ export const getSiteInfo = async (link: string): Promise<IWebsiteResponse> => {
     const title = getTitle(res.data);
     const description = getDescription(res.data);
     const image = getImageSrc(res.data);
+
+    console.log("[title, description, image]: ", [title, description, image]);
 
     return {
       data: { title, description, image },
