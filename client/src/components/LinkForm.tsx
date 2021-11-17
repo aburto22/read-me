@@ -7,6 +7,7 @@ type LinkFormProps = {
 
 const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
   const [link, setLink] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>): void => {
     setLink(event.currentTarget.value);
@@ -17,18 +18,21 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
     addLink(link)
       .then((data) => {
         setLink("");
+        setError("");
         setLinks(data);
       })
-      .catch((err) => console.log("err: ", err));
+      .catch((err) => {
+        setError(err.message);
+      });
   };
 
   return (
-    <form
-      className="flex flex-col lg:fixed w-full max-w-sm"
-      onSubmit={handleSubmit}
-    >
+    <form className="flex flex-col w-full mb-10" onSubmit={handleSubmit}>
       <label htmlFor="link" className="mb-4">
-        <span className="block mb-2">Insert link:</span>
+        <div className="mb-2 flex items-center">
+          <span>Insert link:</span>
+          <span className="ml-auto text-red-500 text-sm">{error}</span>
+        </div>
         <input
           type="text"
           name="link"

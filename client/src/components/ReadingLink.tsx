@@ -61,13 +61,15 @@ const ReadingLink = ({
       }`}
     >
       <div className="flex relative">
-        <div className="w-20 h-full rounded-l hidden sm:block bg-blue-image flex-shrink-0">
-          {image && (
+        <div className="w-20 h-full rounded-l hidden sm:flex bg-blue-image flex-shrink-0 sm:items-center sm:justify-center">
+          {image ? (
             <img
               src={image}
               alt="Read link cover"
               className="object-cover rounded-l w-full h-full"
             />
+          ) : (
+            <p className="text-5xl text-white">{name[0]}</p>
           )}
         </div>
         <div className="mr-2 flex-grow py-2 pl-3">

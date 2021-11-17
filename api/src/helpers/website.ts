@@ -65,7 +65,7 @@ export const getTitle = (site: string): string => {
 export const getDescription = (site: string): string => {
   const head = getHead(site);
 
-  const regex = /<meta[^<>]*?name="(?:og:)?description"[^<>]*?>/;
+  const regex = /<meta[^<>]+?name="(?:og:)?description"[^<>]*?>/;
 
   const match = head.match(regex);
 
@@ -73,7 +73,7 @@ export const getDescription = (site: string): string => {
     return "";
   }
 
-  const regex1 = /content="(.*?)"/;
+  const regex1 = /content="([^<>]+?)"/;
 
   const match1 = match[0].match(regex1);
 
@@ -81,7 +81,13 @@ export const getDescription = (site: string): string => {
     return "";
   }
 
-  return match1[1];
+  let finalString = match1[1].replaceAll("\n", " ");
+
+  while (finalString.indexOf("  ") >= 0) {
+    finalString = finalString.replaceAll("  ", " ");
+  }
+
+  return finalString;
 };
 
 export const getImageSrc = (site: string): string => {

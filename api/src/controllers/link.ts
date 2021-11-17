@@ -59,7 +59,7 @@ export const addLink = async (
     return res.json([]);
   }
 
-  doc.links = [...doc.links, newLink];
+  doc.links = [newLink, ...doc.links];
 
   await doc.save();
 

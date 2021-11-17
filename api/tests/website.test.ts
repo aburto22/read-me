@@ -247,6 +247,24 @@ describe("Get Description", () => {
 
     expect(response).toMatch(desiredOutput);
   });
+  test('It sould retrieve description for a tag with line jumps: <meta content="some text\\nand some more\\nline jumps" name="description"/>', () => {
+    const input =
+      '<head>\n<meta content="some text\nand some more\nline jumps" name="description"/>\n</head>';
+    const response = getDescription(input);
+
+    const desiredOutput = "some text and some more line jumps";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It sould clean up a description with multiple spaces: <meta content="some   text\\n and some more \\nline   jumps" name="description"/>', () => {
+    const input =
+      '<head>\n<meta content="some   text\n and some more \nline   jumps" name="description"/>\n</head>';
+    const response = getDescription(input);
+
+    const desiredOutput = "some text and some more line jumps";
+
+    expect(response).toMatch(desiredOutput);
+  });
 });
 
 describe("Get Site Info", () => {
@@ -258,7 +276,7 @@ describe("Get Site Info", () => {
       title: "Google",
       description:
         "Velkommen til Google S�k. Finn det du leter etter p� nettet p� et blunk.",
-      image: "something",
+      image: "",
     };
 
     expect(response.data).toMatchObject(desiredOutput);
@@ -328,7 +346,7 @@ describe("Get Site Info", () => {
     const desiredOutput = {
       title: "TypeScript: Documentation - More on Functions",
       description: "Learn about how Functions work in TypeScript.",
-      image: "something",
+      image: "",
     };
 
     expect(response.data).toMatchObject(desiredOutput);
@@ -355,7 +373,7 @@ describe("Get Site Info", () => {
       title: "TypeScript: Documentation - Narrowing",
       description:
         "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
-      image: "something",
+      image: "",
     };
 
     expect(response.data).toMatchObject(desiredOutput);
@@ -368,7 +386,7 @@ describe("Get Site Info", () => {
       title:
         "Average Joe Cyclist &bull; A Blog for Average People who LOVE to ride bikes!",
       description: "A Blog for Average People who LOVE to ride bikes!",
-      image: "something",
+      image: "",
     };
 
     expect(response.data).toMatchObject(desiredOutput);
