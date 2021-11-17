@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Links from "../models/Links";
-import { ILink, IDBUser, IDBLink } from "../types/global";
-import { getSiteInfo } from "../helpers/website";
+import { ILink, IDBUser, IDBLink, IResponseError } from "../types/global";
+import { getSiteInfo, validateLink, appendHTTPS } from "../helpers/website";
 
 export const getLinks = async (
   req: Request,
@@ -22,11 +22,18 @@ export const addLink = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<Response<ILink[]>> => {
+): Promise<Response<ILink[] | IResponseError>> => {
   const user = "user";
   const { link }: { link: string } = req.body;
 
-  const siteInfo = await getSiteInfo(link);
+  const httpsLink = appendHTTPS(link);
+
+  if (!validateLink(httpsLink)) {
+    const error = { error: { message: "Link is invalid." } };
+    return res.json(error);
+  }
+
+  const siteInfo = await getSiteInfo(httpsLink);
 
   let name;
   let description;
@@ -42,7 +49,7 @@ export const addLink = async (
     name: name || "",
     description: description || "",
     image: image || "",
-    link,
+    link: httpsLink,
     isRead: false,
   } as IDBLink;
 

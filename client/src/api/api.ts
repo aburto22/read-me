@@ -13,7 +13,16 @@ export const addLink = (link: string): Promise<ILink[]> =>
     url: "/links",
     baseURL: "http://localhost:5000",
     data: { link },
-  }).then((res: AxiosResponse<ILink[]>) => res.data);
+  })
+    .then((res: AxiosResponse<ILink[] | IApiError>) => {
+      if ("error" in res.data) {
+        throw new Error(res.data.error.message);
+      }
+      return res.data;
+    })
+    .catch((err: Error) => {
+      throw err;
+    });
 
 export const deleteLink = (linkId: string): Promise<ILink[]> =>
   axios({

@@ -6,3 +6,7 @@ declare interface ILink {
   image: string;
   _id: string;
 }
+
+declare interface IApiError {
+  error: { message: string };
+}

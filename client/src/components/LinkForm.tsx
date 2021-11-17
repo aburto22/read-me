@@ -14,10 +14,12 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
 
   const handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
-    addLink(link).then((data) => {
-      setLink("");
-      setLinks(data);
-    });
+    addLink(link)
+      .then((data) => {
+        setLink("");
+        setLinks(data);
+      })
+      .catch((err) => console.log("err: ", err));
   };
 
   return (

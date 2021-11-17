@@ -3,8 +3,38 @@ import fs from "fs/promises";
 
 interface IWebsiteResponse {
   error?: { message: string };
-  data?: { title: string; description?: string; image?: string };
+  data?: { [key: string]: string };
 }
+
+export const appendHTTPS = (link: string): string => {
+  let domain = link;
+  if (link.indexOf("http://") === 0) {
+    domain = link.replace("http://", "https://");
+  } else if (link.indexOf("https://") !== 0) {
+    domain = `https://${link}`;
+  }
+
+  return domain;
+};
+
+export const getDomain = (link: string): string => {
+  const newLink = appendHTTPS(link);
+
+  const regex = /^https:\/\/(?:www.)?.+?\..+?\//;
+
+  const match = `${newLink}/`.match(regex);
+
+  if (!match) {
+    return "";
+  }
+
+  return match[0];
+};
+
+export const validateLink = (link: string): boolean => {
+  const domain = getDomain(link.toLowerCase());
+  return /^https:\/\/[a-z0-9-]+\.[a-z0-9-.]+\/$/.test(domain);
+};
 
 export const getHead = (site: string): string => {
   const regex = /<head\s*>[\s\S]*?<\/head>/;
@@ -84,10 +114,8 @@ export const getSiteInfo = async (link: string): Promise<IWebsiteResponse> => {
     const description = getDescription(res.data);
     const image = getImageSrc(res.data);
 
-    console.log("[title, description, image]: ", [title, description, image]);
-
     return {
-      data: { title, description, image },
+      data: { title, description, image, success: "success" },
     };
   } catch (err) {
     return {
@@ -96,18 +124,19 @@ export const getSiteInfo = async (link: string): Promise<IWebsiteResponse> => {
   }
 };
 
-export const getSiteFile = async (link: string): Promise<string> => {
+export const getSiteFile = async (
+  link: string,
+  fileName: string
+): Promise<IWebsiteResponse> => {
   try {
     const res = await axios.get<string>(link);
 
-    const outputFile = "response.html";
+    await fs.writeFile(`./tests/html/${fileName}.html`, res.data);
 
-    await fs.writeFile(`./tests/html/${outputFile}`, res.data);
+    console.log(`${link} > ${fileName}.html`);
 
-    console.log(`${link} > ${outputFile}`);
-
-    return "completed";
+    return { data: { success: "success" } };
   } catch (err) {
-    return "failed";
+    return { error: { message: (err as Error).message } };
   }
 };

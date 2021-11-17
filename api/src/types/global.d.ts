@@ -1,5 +1,9 @@
 import { Document } from "mongoose";
 
+declare interface IResponseError {
+  error: { message: string };
+}
+
 declare interface ILink {
   name: string;
   description: string;
