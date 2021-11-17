@@ -26,6 +26,8 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
       });
   };
 
+  const isLinkValid = /^[^<>]+\.[^<>]+$/.test(link);
+
   return (
     <form className="flex flex-col w-full mb-10" onSubmit={handleSubmit}>
       <label htmlFor="link" className="mb-4">
@@ -43,7 +45,10 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
       </label>
       <button
         type="submit"
-        className="py-2 px-4 border border-gray-500 rounded bg-gray-dark text-white w-max mx-auto"
+        disabled={!isLinkValid}
+        className={`py-2 px-4 border border-gray-500 bg-gray-dark rounded text-white w-max mx-auto ${
+          !isLinkValid && "opacity-50 cursor-default"
+        }`}
       >
         Create
       </button>
