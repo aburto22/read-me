@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import { useState } from "react";
 import Svg from "./common/svg";
-import { deleteLink, setReadLink } from "../api/api";
+import { deleteLink, setReadLink, setLinkTags } from "../api/api";
 
 interface IReadingLinkParams {
   name: string;
@@ -57,8 +57,8 @@ const ReadingLink = ({
     }
   };
 
-  const handleUpdateTags = (): void => {
-    const sanitizedInput = inputTags.replaceAll(/[^ A-Za-z0-9-_()[\]]/g, "");
+  const handleUpdateTags = async (): Promise<void> => {
+    const sanitizedInput = inputTags.replaceAll(/[^ A-Za-z0-9-_,()[\]]/g, "");
     let newTags: string[] = [];
     if (sanitizedInput.trim() !== "") {
       newTags = sanitizedInput.split(",").map((tag) => tag.trim());
@@ -66,6 +66,8 @@ const ReadingLink = ({
     setTags(newTags);
     setInputTags(newTags.join(", "));
     setIsEditingTags(false);
+    const links = await setLinkTags(linkId, newTags);
+    setLinks(links);
   };
 
   return (
