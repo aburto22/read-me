@@ -25,8 +25,8 @@ const ReadingLink = ({
   setLinks,
 }: IReadingLinkParams): JSX.Element => {
   const [read, setRead] = useState(isRead);
-  const [tags, setTags] = useState(tagsArr.join(", "));
-  const [inputTags, setInputTags] = useState(tags);
+  const [tags, setTags] = useState(tagsArr);
+  const [inputTags, setInputTags] = useState(tags.join(", "));
   const [isEditingTags, setIsEditingTags] = useState(false);
 
   const handleDelete = async (): Promise<void> => {
@@ -53,14 +53,18 @@ const ReadingLink = ({
       setIsEditingTags(true);
     } else {
       setIsEditingTags(false);
-      setInputTags(tags);
+      setInputTags(tags.join(", "));
     }
   };
 
   const handleUpdateTags = (): void => {
-    if (tags !== inputTags) {
-      setTags(inputTags);
+    const sanitizedInput = inputTags.replaceAll(/[^ A-Za-z0-9-_()[\]]/g, "");
+    let newTags: string[] = [];
+    if (sanitizedInput.trim() !== "") {
+      newTags = sanitizedInput.split(",").map((tag) => tag.trim());
     }
+    setTags(newTags);
+    setInputTags(newTags.join(", "));
     setIsEditingTags(false);
   };
 
@@ -109,7 +113,9 @@ const ReadingLink = ({
           >
             <p className="mr-1 py-1">
               tags:{" "}
-              <span className={`${isEditingTags && "hidden"}`}>{tags}</span>
+              <span className={`${isEditingTags && "hidden"}`}>
+                {tags.join(", ")}
+              </span>
             </p>
             <div
               className={`${isEditingTags ? "block" : "hidden"} flex-grow flex`}
