@@ -4,6 +4,7 @@ declare interface ILink {
   link: string;
   isRead: boolean;
   image: string;
+  tags: string[];
   _id: string;
 }
 

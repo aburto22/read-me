@@ -10,6 +10,7 @@ declare interface ILink {
   link: string;
   isRead: boolean;
   image: string;
+  tags: string[];
 }
 
 declare interface IDBLink extends Document {
@@ -18,9 +19,10 @@ declare interface IDBLink extends Document {
   link: string;
   isRead: boolean;
   image: string;
+  tags: string[];
 }
 
 declare interface IDBUser extends Document {
   user: string;
-  links: IDBLink[];
+  links: Array<IDBLink>;
 }

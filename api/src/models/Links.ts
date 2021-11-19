@@ -9,6 +9,7 @@ const LinksSchema = new Schema<IDBUser>({
       name: String,
       description: String,
       image: String,
+      tags: [String],
       isRead: { type: Boolean, default: false },
     },
   ],

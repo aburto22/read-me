@@ -5,8 +5,7 @@ import { getSiteInfo, validateLink, appendHTTPS } from "../helpers/website";
 
 export const getLinks = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<Response<ILink[]>> => {
   const user = "user";
   const doc: IDBUser | null = await Links.findOne({ user }).exec();
@@ -20,8 +19,7 @@ export const getLinks = async (
 
 export const addLink = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<Response<ILink[] | IResponseError>> => {
   const user = "user";
   const { link }: { link: string } = req.body;
@@ -45,13 +43,14 @@ export const addLink = async (
     image = siteInfo.data?.image;
   }
 
-  const newLink = {
+  const newLink: ILink = {
     name: name || "",
     description: description || "",
     image: image || "",
     link: httpsLink,
     isRead: false,
-  } as IDBLink;
+    tags: [],
+  };
 
   const doc: IDBUser | null = await Links.findOne({ user }).exec();
 
@@ -59,7 +58,7 @@ export const addLink = async (
     return res.json([]);
   }
 
-  doc.links = [newLink, ...doc.links];
+  doc.links = [newLink as IDBLink, ...doc.links];
 
   await doc.save();
 
@@ -68,8 +67,7 @@ export const addLink = async (
 
 export const deleteLink = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<Response<ILink[]>> => {
   const user = "user";
   const { linkId }: { linkId: string } = req.body;
@@ -89,8 +87,7 @@ export const deleteLink = async (
 
 export const updateLink = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<Response<ILink[]>> => {
   const user = "user";
   const { linkId, bool }: { linkId: string; bool: boolean } = req.body;
@@ -101,18 +98,11 @@ export const updateLink = async (
     return res.json([]);
   }
 
-  doc.links = doc.links.map((link) => {
-    if (link._id.toString() === linkId) {
-      return {
-        name: link.name,
-        description: link.description,
-        link: link.link,
-        image: link.image,
-        isRead: bool,
-      } as IDBLink;
-    }
-    return link;
-  });
+  const index = doc.links.findIndex((link) => link._id.toString() === linkId);
+
+  doc.links[index].isRead = bool;
+
+  doc.markModified("links");
 
   await doc.save();
 

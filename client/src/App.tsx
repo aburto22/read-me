@@ -57,6 +57,7 @@ const App = (): JSX.Element => {
         link={link.link}
         isRead={link.isRead}
         image={link.image}
+        tagsArr={link.tags}
         setLinks={setLinks}
       />
     ));

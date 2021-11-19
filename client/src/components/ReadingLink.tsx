@@ -10,6 +10,7 @@ interface IReadingLinkParams {
   linkId: string;
   isRead: boolean;
   image: string;
+  tagsArr: string[];
   setLinks: (links: ILink[]) => void;
 }
 
@@ -20,9 +21,13 @@ const ReadingLink = ({
   linkId,
   isRead,
   image,
+  tagsArr,
   setLinks,
 }: IReadingLinkParams): JSX.Element => {
   const [read, setRead] = useState(isRead);
+  const [tags, setTags] = useState(tagsArr.join(", "));
+  const [inputTags, setInputTags] = useState(tags);
+  const [isEditingTags, setIsEditingTags] = useState(false);
 
   const handleDelete = async (): Promise<void> => {
     const links = await deleteLink(linkId);
@@ -37,10 +42,26 @@ const ReadingLink = ({
     }
   };
 
-  const handleToggle = async (): Promise<void> => {
+  const handleReadToggle = async (): Promise<void> => {
     setRead((val) => !val);
     const links = await setReadLink(linkId, !read);
     setLinks(links);
+  };
+
+  const handleInputToggle = (): void => {
+    if (!isEditingTags) {
+      setIsEditingTags(true);
+    } else {
+      setIsEditingTags(false);
+      setInputTags(tags);
+    }
+  };
+
+  const handleUpdateTags = (): void => {
+    if (tags !== inputTags) {
+      setTags(inputTags);
+    }
+    setIsEditingTags(false);
   };
 
   return (
@@ -68,19 +89,47 @@ const ReadingLink = ({
             dangerouslySetInnerHTML={{ __html: name }}
           />
           <a
-            className="text-xs block overflow-ellipsis overflow-hidden whitespace-nowrap mb-2"
+            className="text-xs block overflow-ellipsis overflow-hidden whitespace-nowrap mb-1"
             href={link}
             target="_blank"
             rel="noreferrer"
             onClick={handleClick}
           >
             {link}
-            <div className="absolute inset-0" />
+            {/* <div className="absolute inset-0" /> */}
           </a>
           <p
             className="text-sm break-normal max-w-xxs sm:max-w-xs line-clamp-2"
             dangerouslySetInnerHTML={{ __html: description }}
           />
+          <div
+            className={`text-xs italic mt-1 flex ${
+              isEditingTags || tags.length > 0 ? "block" : "hidden"
+            }`}
+          >
+            <p className="mr-1 py-1">
+              tags:{" "}
+              <span className={`${isEditingTags && "hidden"}`}>{tags}</span>
+            </p>
+            <div
+              className={`${isEditingTags ? "block" : "hidden"} flex-grow flex`}
+            >
+              <input
+                type="text"
+                value={inputTags}
+                onChange={(event) => setInputTags(event.target.value)}
+                className="text-gray-primary px-1 flex-grow rounded-l outline-none"
+              />
+              <button
+                type="button"
+                className="px-2 bg-gray-200 rounded-r"
+                title="Update tags"
+                onClick={handleUpdateTags}
+              >
+                <Svg name="check" className="h-5 w-5 text-gray-primary" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -98,8 +147,16 @@ const ReadingLink = ({
         </button>
         <button
           type="button"
+          onClick={handleInputToggle}
+          className=""
+          title="Edit tags"
+        >
+          <Svg name="edit" className="h-5 w-5" />
+        </button>
+        <button
+          type="button"
           className="text-xs"
-          onClick={handleToggle}
+          onClick={handleReadToggle}
           title="Toggle read/unread"
         >
           {read ? "read" : "unread"}
