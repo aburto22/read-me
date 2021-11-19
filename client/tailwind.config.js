@@ -14,11 +14,15 @@ module.exports = {
       },
       maxWidth: {
         xxs: "14rem",
+        "list-red": "300px",
+        "list-small": "240px",
       }
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 };

@@ -43,16 +43,6 @@ const ReadingLink = ({
     setLinks(links);
   };
 
-  const nameShort = name.length > 33 ? `${name.slice(0, 30)}...` : name;
-  const descriptionShort =
-    description.length > 63 ? `${description.slice(0, 60)}...` : description;
-  const linkShort = link.length > 33 ? `${link.slice(0, 30)}...` : link;
-
-  const nameLong = name.length > 38 ? `${name.slice(0, 35)}...` : name;
-  const descriptionLong =
-    description.length > 83 ? `${description.slice(0, 80)}...` : description;
-  const linkLong = link.length > 43 ? `${link.slice(0, 40)}...` : link;
-
   return (
     <li
       key={linkId}
@@ -72,38 +62,25 @@ const ReadingLink = ({
             <p className="text-5xl text-white">{name[0]}</p>
           )}
         </div>
-        <div className="mr-2 flex-grow py-2 pl-3">
-          <h2 className="text-sm font-bold">
-            <span
-              className="sm:hidden"
-              dangerouslySetInnerHTML={{ __html: nameShort }}
-            />
-            <span
-              className="hidden sm:inline"
-              dangerouslySetInnerHTML={{ __html: nameLong }}
-            />
-          </h2>
+        <div className="mr-2 flex-grow py-2 pl-3 max-w-list-small sm:max-w-list-reg">
+          <h2
+            className="text-sm font-bold overflow-ellipsis overflow-hidden whitespace-nowrap"
+            dangerouslySetInnerHTML={{ __html: name }}
+          />
           <a
-            className="text-xs"
+            className="text-xs block overflow-ellipsis overflow-hidden whitespace-nowrap mb-2"
             href={link}
             target="_blank"
             rel="noreferrer"
             onClick={handleClick}
           >
-            <span className="sm:hidden">{linkShort}</span>
-            <span className="hidden sm:inline">{linkLong}</span>
+            {link}
             <div className="absolute inset-0" />
           </a>
-          <p className="text-sm break-normal max-w-xxs sm:max-w-xs">
-            <span
-              className="sm:hidden"
-              dangerouslySetInnerHTML={{ __html: descriptionShort }}
-            />
-            <span
-              className="hidden sm:inline"
-              dangerouslySetInnerHTML={{ __html: descriptionLong }}
-            />
-          </p>
+          <p
+            className="text-sm break-normal max-w-xxs sm:max-w-xs line-clamp-2"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         </div>
       </div>
       <div
@@ -111,10 +88,20 @@ const ReadingLink = ({
           read ? "border-green-500" : "border-gray-300"
         }`}
       >
-        <button type="button" onClick={handleDelete} className="">
+        <button
+          type="button"
+          onClick={handleDelete}
+          className=""
+          title="Delete link"
+        >
           <Svg name="trash" className="h-5 w-5" />
         </button>
-        <button type="button" className="text-xs" onClick={handleToggle}>
+        <button
+          type="button"
+          className="text-xs"
+          onClick={handleToggle}
+          title="Toggle read/unread"
+        >
           {read ? "read" : "unread"}
         </button>
       </div>
