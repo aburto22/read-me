@@ -3,6 +3,8 @@ import LinkForm from "./components/LinkForm";
 import { getLinks } from "./api/api";
 import ReadingLink from "./components/ReadingLink";
 import Tag from "./components/Tag";
+import Filters from "./components/Filters";
+import Sort from "./components/Sort";
 
 const App = (): JSX.Element => {
   // TODO: Let users add tags when creating a link.
@@ -15,14 +17,6 @@ const App = (): JSX.Element => {
   useEffect(() => {
     getLinks().then((data) => setLinks(data));
   }, []);
-
-  const handleShow = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setShow(event.currentTarget.value);
-  };
-
-  const handleSort = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSort(event.currentTarget.value);
-  };
 
   const checkTagsInFilterTags = (tags: string[]): boolean =>
     tags.reduce(
@@ -83,44 +77,8 @@ const App = (): JSX.Element => {
         <div className="lg:fixed w-full max-w-sm">
           <h1 className="text-2xl mb-6 text-center">Read Me</h1>
           <LinkForm setLinks={setLinks} />
-          <div className="mb-2 flex justify-center">
-            <p className="font-bold text-center mr-4">Filters:</p>
-            <select
-              name="filters"
-              onChange={handleShow}
-              value={show}
-              className="px-1 text-sm bg-transparent border-b border-white"
-            >
-              <option value="all" className="bg-gray-dark">
-                Show all
-              </option>
-              <option value="unread" className="bg-gray-dark">
-                Show unread
-              </option>
-              <option value="read" className="bg-gray-dark">
-                Show read
-              </option>
-            </select>
-          </div>
-          <div className="mb-4 flex justify-center">
-            <p className="font-bold text-center mr-4">Sort:</p>
-            <select
-              name="sort"
-              onChange={handleSort}
-              value={sort}
-              className="px-1 text-sm bg-transparent border-b border-white"
-            >
-              <option value="none" className="bg-gray-dark text-sm">
-                None
-              </option>
-              <option value="unread" className="bg-gray-dark text-sm">
-                Unread first
-              </option>
-              <option value="read" className="bg-gray-dark">
-                Read first
-              </option>
-            </select>
-          </div>
+          <Filters show={show} setShow={setShow} />
+          <Sort sort={sort} setSort={setSort} />
           {TagsComponent.length > 0 && (
             <div>
               <p className="font-bold text-center mr-4">Tags:</p>
