@@ -5,15 +5,21 @@ import ReadingLink from "./components/ReadingLink";
 import Tag from "./components/Tag";
 import Filters from "./components/Filters";
 import Sort from "./components/Sort";
+import ReadingSkeleton from "./components/ReadingSkeleton";
 
 const App = (): JSX.Element => {
   const [links, setLinks] = useState<ILink[]>([]);
   const [show, setShow] = useState<string>("all");
   const [sort, setSort] = useState<string>("none");
   const [filterTags, setFilterTags] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    getLinks().then((data) => setLinks(data));
+    setIsLoading(true);
+    getLinks().then((data) => {
+      setIsLoading(false);
+      setLinks(data);
+    });
   }, []);
 
   const checkTagsInFilterTags = (tags: string[]): boolean =>
@@ -73,6 +79,17 @@ const App = (): JSX.Element => {
     setFilterTags([]);
   }
 
+  const ListContent =
+    links.length > 0 ? (
+      <ul className="max-w-full">{LinksComponent}</ul>
+    ) : (
+      <p>Add links to create a reading list.</p>
+    );
+
+  const LoadingContent = Array(4)
+    .fill(0)
+    .map(() => <ReadingSkeleton />);
+
   return (
     <div className="min-h-screen flex flex-col items-start justify-center lg:flex-row bg-gray-primary text-white px-2 w-full">
       <div className="flex items-center mt-8 lg:mt-0 max-w-sm w-full mx-auto lg:mr-12 lg:ml-0 relative lg:h-screen">
@@ -90,10 +107,10 @@ const App = (): JSX.Element => {
         </div>
       </div>
       <div className="flex flex-col items-center lg:min-h-screen lg:justify-center w-full pb-8 pt-4 lg:py-8 mx-auto lg:mx-0 max-w-md">
-        {links.length > 0 ? (
-          <ul className="max-w-full">{LinksComponent}</ul>
+        {isLoading ? (
+          <ul className="max-w-full">{LoadingContent}</ul>
         ) : (
-          <p>Add links to create a reading list.</p>
+          ListContent
         )}
       </div>
     </div>
