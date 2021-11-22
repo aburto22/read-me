@@ -148,8 +148,6 @@ export const getSiteFile = async (
 
     await fs.writeFile(`./tests/html/${fileName}.html`, res.data);
 
-    console.log(`${link} > ${fileName}.html`);
-
     return { type: "success", data: {} };
   } catch (err) {
     return { type: "error", message: (err as Error).message };
