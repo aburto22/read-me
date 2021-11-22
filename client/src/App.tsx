@@ -7,7 +7,6 @@ import Filters from "./components/Filters";
 import Sort from "./components/Sort";
 
 const App = (): JSX.Element => {
-  // TODO: Let users add tags when creating a link.
   const [links, setLinks] = useState<ILink[]>([]);
   const [show, setShow] = useState<string>("all");
   const [sort, setSort] = useState<string>("none");

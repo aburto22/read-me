@@ -7,12 +7,12 @@ export const getLinks = (): Promise<ILink[]> =>
     baseURL: "http://localhost:5000",
   }).then((res: AxiosResponse<ILink[]>) => res.data);
 
-export const addLink = (link: string): Promise<ILink[]> =>
+export const addLink = (link: string, tags: string[]): Promise<ILink[]> =>
   axios({
     method: "post",
     url: "/links",
     baseURL: "http://localhost:5000",
-    data: { link },
+    data: { link, tags },
   })
     .then((res: AxiosResponse<ILink[] | IApiError>) => {
       if ("error" in res.data) {

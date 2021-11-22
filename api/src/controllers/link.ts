@@ -22,7 +22,7 @@ export const addLink = async (
   res: Response
 ): Promise<Response<ILink[] | IResponseError>> => {
   const user = "user";
-  const { link }: { link: string } = req.body;
+  const { link, tags }: { link: string; tags: string[] } = req.body;
 
   const httpsLink = appendHTTPS(link);
 
@@ -49,7 +49,7 @@ export const addLink = async (
     image: image || "",
     link: httpsLink,
     isRead: false,
-    tags: [],
+    tags: tags || [],
   };
 
   const doc: IDBUser | null = await Links.findOne({ user }).exec();

@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import Svg from "./common/svg";
 import { deleteLink, setReadLink, setLinkTags } from "../api/api";
+import { tagsStringToArr, tagsArrToString } from "../api/tags";
 
 interface IReadingLinkParams {
   link: ILink;
@@ -48,15 +49,12 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
   };
 
   const handleUpdateTags = async (): Promise<void> => {
-    const sanitizedInput = inputTags.replaceAll(/[^ A-Za-z0-9-_,()[\]]/g, "");
-    let newTags: string[] = [];
-    if (sanitizedInput.trim() !== "") {
-      newTags = sanitizedInput.split(",").map((tag) => tag.trim());
-    }
-    setTags(newTags);
-    setInputTags(newTags.join(", "));
+    const tagsArr = tagsStringToArr(inputTags);
+    setTags(tagsArr);
+    const tagsStr = tagsArrToString(tagsArr);
+    setInputTags(tagsStr);
     setIsEditingTags(false);
-    const links = await setLinkTags(link._id, newTags);
+    const links = await setLinkTags(link._id, tagsArr);
     setLinks(links);
   };
 

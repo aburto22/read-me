@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import Links from "../models/Links";
 import { ILink, IDBUser } from "../types/global";
 
