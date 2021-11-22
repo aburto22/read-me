@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Svg from "./common/svg";
 import { deleteLink, setReadLink, setLinkTags } from "../api/api";
 import { tagsStringToArr, tagsArrToString } from "../api/tags";
@@ -10,14 +10,32 @@ interface IReadingLinkParams {
 }
 
 const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
-  // TODO: Remove coma when it is the last value in the string.
   // TODO: Sanitize input as user types.
-  // TODO: Make whole card to be clickable.
   const [read, setRead] = useState(link.isRead);
   const [tags, setTags] = useState(link.tags);
   const [inputTags, setInputTags] = useState(tags.join(", "));
   const [isEditingTags, setIsEditingTags] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const exitInputEsc = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") {
+        setIsEditingTags(false);
+        setInputTags(tags.join(", "));
+      }
+    };
+
+    if (isEditingTags && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.addEventListener("keydown", exitInputEsc);
+    }
+
+    return () => {
+      if (inputRef.current) {
+        inputRef.current.removeEventListener("keydown", exitInputEsc);
+      }
+    };
+  }, [isEditingTags]);
 
   const handleDelete = async (): Promise<void> => {
     const links = await deleteLink(link._id);
@@ -41,7 +59,6 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
   const handleInputToggle = (): void => {
     if (!isEditingTags) {
       setIsEditingTags(true);
-      inputRef.current?.focus();
     } else {
       setIsEditingTags(false);
       setInputTags(tags.join(", "));
@@ -95,7 +112,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
             onClick={handleClick}
           >
             {link.link}
-            {/* <div className="absolute inset-0" /> */}
+            {!isEditingTags && <div className="absolute inset-0" />}
           </a>
           <p
             className="text-sm break-normal max-w-xxs sm:max-w-xs line-clamp-2"
