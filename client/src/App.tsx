@@ -8,7 +8,6 @@ import Sort from "./components/Sort";
 
 const App = (): JSX.Element => {
   // TODO: Let users add tags when creating a link.
-  // TODO: Remove tag from array when user delete reading list.
   const [links, setLinks] = useState<ILink[]>([]);
   const [show, setShow] = useState<string>("all");
   const [sort, setSort] = useState<string>("none");
@@ -70,6 +69,10 @@ const App = (): JSX.Element => {
     .map((link) => (
       <ReadingLink key={link._id} link={link} setLinks={setLinks} />
     ));
+
+  if (LinksComponent.length === 0 && filterTags.length > 0) {
+    setFilterTags([]);
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-start justify-center lg:flex-row bg-gray-primary text-white px-2 w-full">
