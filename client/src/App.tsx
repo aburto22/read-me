@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import LinkForm from "./components/LinkForm";
 import { getLinks } from "./api/api";
 import ReadingLink from "./components/ReadingLink";
+import Tag from "./components/Tag";
 
 const App = (): JSX.Element => {
+  // TODO: Let users add tags when creating a link.
+  // TODO: Remove tag from array when user delete reading list.
   const [links, setLinks] = useState<ILink[]>([]);
   const [show, setShow] = useState<string>("all");
   const [sort, setSort] = useState<string>("none");
+  const [filterTags, setFilterTags] = useState<string[]>([]);
 
   useEffect(() => {
     getLinks().then((data) => setLinks(data));
@@ -20,32 +24,25 @@ const App = (): JSX.Element => {
     setSort(event.currentTarget.value);
   };
 
-  const filteredLinks = links.filter((link) => {
-    switch (show) {
-      case "all":
-        return true;
-      case "read":
-        return link.isRead;
-      case "unread":
-        return !link.isRead;
-      default:
-        return false;
-    }
-  });
+  const checkTagsInFilterTags = (tags: string[]): boolean =>
+    tags.reduce(
+      (bool: boolean, tag) => bool || filterTags.includes(tag),
+      false
+    );
 
-  const tags = filteredLinks.reduce((arr: string[], link) => {
-    const newArr = [...arr];
-    link.tags.forEach((tag) => {
-      if (!newArr.includes(tag)) {
-        newArr.push(tag);
+  const filteredLinks = links
+    .filter((link) => {
+      switch (show) {
+        case "all":
+          return true;
+        case "read":
+          return link.isRead;
+        case "unread":
+          return !link.isRead;
+        default:
+          return false;
       }
-    });
-    return newArr;
-  }, []);
-
-  console.log("tags: ", tags);
-
-  const LinksComponent = filteredLinks
+    })
     .sort((a, b) => {
       if (b.isRead === a.isRead) {
         return 0;
@@ -60,7 +57,22 @@ const App = (): JSX.Element => {
         default:
           return 0;
       }
-    })
+    });
+
+  const TagsComponent = filteredLinks
+    .reduce((arr: string[], link) => {
+      const newArr = [...arr];
+      link.tags.forEach((tag) => {
+        if (!newArr.includes(tag)) {
+          newArr.push(tag);
+        }
+      });
+      return newArr;
+    }, [])
+    .map((tag) => <Tag tag={tag} key={tag} setFilterTags={setFilterTags} />);
+
+  const LinksComponent = filteredLinks
+    .filter((link) => !filterTags.length || checkTagsInFilterTags(link.tags))
     .map((link) => (
       <ReadingLink
         key={link._id}
@@ -119,7 +131,12 @@ const App = (): JSX.Element => {
               </option>
             </select>
           </div>
-          <div>{tags}</div>
+          {TagsComponent.length > 0 && (
+            <div>
+              <p className="font-bold text-center mr-4">Tags:</p>
+              <ul className="flex justify-center">{TagsComponent}</ul>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex flex-col items-center lg:min-h-screen lg:justify-center w-full pb-8 pt-4 lg:py-8 mx-auto lg:mx-0 max-w-md">

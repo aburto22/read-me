@@ -37,7 +37,7 @@ export const addLink = async (
   let description;
   let image;
 
-  if (siteInfo.data) {
+  if (siteInfo.type === "success") {
     name = siteInfo.data.title;
     description = siteInfo.data?.description;
     image = siteInfo.data?.image;

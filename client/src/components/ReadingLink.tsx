@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Svg from "./common/svg";
 import { deleteLink, setReadLink, setLinkTags } from "../api/api";
 
@@ -24,10 +24,13 @@ const ReadingLink = ({
   tagsArr,
   setLinks,
 }: IReadingLinkParams): JSX.Element => {
+  // TODO: Remove coma when it is the last value in the string.
+  // TODO: Sanitize input as user types.
   const [read, setRead] = useState(isRead);
   const [tags, setTags] = useState(tagsArr);
   const [inputTags, setInputTags] = useState(tags.join(", "));
   const [isEditingTags, setIsEditingTags] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDelete = async (): Promise<void> => {
     const links = await deleteLink(linkId);
@@ -51,6 +54,7 @@ const ReadingLink = ({
   const handleInputToggle = (): void => {
     if (!isEditingTags) {
       setIsEditingTags(true);
+      inputRef.current?.focus();
     } else {
       setIsEditingTags(false);
       setInputTags(tags.join(", "));
@@ -68,6 +72,12 @@ const ReadingLink = ({
     setIsEditingTags(false);
     const links = await setLinkTags(linkId, newTags);
     setLinks(links);
+  };
+
+  const handleInputKey = (event: React.KeyboardEvent): void => {
+    if (event.key === "Enter") {
+      handleUpdateTags();
+    }
   };
 
   return (
@@ -126,7 +136,9 @@ const ReadingLink = ({
                 type="text"
                 value={inputTags}
                 onChange={(event) => setInputTags(event.target.value)}
+                onKeyPress={handleInputKey}
                 className="text-gray-primary px-1 flex-grow rounded-l outline-none"
+                ref={inputRef}
               />
               <button
                 type="button"

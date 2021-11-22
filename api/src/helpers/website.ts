@@ -1,10 +1,17 @@
 import axios from "axios";
 import fs from "fs/promises";
 
-interface IWebsiteResponse {
-  error?: { message: string };
-  data?: { [key: string]: string };
+interface IWebsiteError {
+  type: "error";
+  message: string;
 }
+
+interface IWebsiteSuccess {
+  type: "success";
+  data: { [key: string]: string };
+}
+
+type IWebsiteResponse = IWebsiteError | IWebsiteSuccess;
 
 export const appendHTTPS = (link: string): string => {
   let domain = link;
@@ -121,11 +128,13 @@ export const getSiteInfo = async (link: string): Promise<IWebsiteResponse> => {
     const image = getImageSrc(res.data);
 
     return {
-      data: { title, description, image, success: "success" },
+      type: "success",
+      data: { title, description, image },
     };
   } catch (err) {
     return {
-      error: { message: (err as Error).message },
+      type: "error",
+      message: (err as Error).message,
     };
   }
 };
@@ -141,8 +150,8 @@ export const getSiteFile = async (
 
     console.log(`${link} > ${fileName}.html`);
 
-    return { data: { success: "success" } };
+    return { type: "success", data: {} };
   } catch (err) {
-    return { error: { message: (err as Error).message } };
+    return { type: "error", message: (err as Error).message };
   }
 };
