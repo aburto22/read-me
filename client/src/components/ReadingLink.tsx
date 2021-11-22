@@ -4,50 +4,36 @@ import Svg from "./common/svg";
 import { deleteLink, setReadLink, setLinkTags } from "../api/api";
 
 interface IReadingLinkParams {
-  name: string;
-  description: string;
-  link: string;
-  linkId: string;
-  isRead: boolean;
-  image: string;
-  tagsArr: string[];
+  link: ILink;
   setLinks: (links: ILink[]) => void;
 }
 
-const ReadingLink = ({
-  name,
-  description,
-  link,
-  linkId,
-  isRead,
-  image,
-  tagsArr,
-  setLinks,
-}: IReadingLinkParams): JSX.Element => {
+const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
   // TODO: Remove coma when it is the last value in the string.
   // TODO: Sanitize input as user types.
-  const [read, setRead] = useState(isRead);
-  const [tags, setTags] = useState(tagsArr);
+  // TODO: Make whole card to be clickable.
+  const [read, setRead] = useState(link.isRead);
+  const [tags, setTags] = useState(link.tags);
   const [inputTags, setInputTags] = useState(tags.join(", "));
   const [isEditingTags, setIsEditingTags] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDelete = async (): Promise<void> => {
-    const links = await deleteLink(linkId);
+    const links = await deleteLink(link._id);
     setLinks(links);
   };
 
   const handleClick = async (): Promise<void> => {
-    if (!isRead) {
+    if (!link.isRead) {
       setRead(true);
-      const links = await setReadLink(linkId, true);
+      const links = await setReadLink(link._id, true);
       setLinks(links);
     }
   };
 
   const handleReadToggle = async (): Promise<void> => {
     setRead((val) => !val);
-    const links = await setReadLink(linkId, !read);
+    const links = await setReadLink(link._id, !read);
     setLinks(links);
   };
 
@@ -70,7 +56,7 @@ const ReadingLink = ({
     setTags(newTags);
     setInputTags(newTags.join(", "));
     setIsEditingTags(false);
-    const links = await setLinkTags(linkId, newTags);
+    const links = await setLinkTags(link._id, newTags);
     setLinks(links);
   };
 
@@ -82,41 +68,40 @@ const ReadingLink = ({
 
   return (
     <li
-      key={linkId}
       className={`border border-gray-300 rounded flex mb-1 bg-gray-dark ${
         read && "border-green-500"
       }`}
     >
       <div className="flex relative">
         <div className="w-20 h-full rounded-l hidden sm:flex bg-blue-image flex-shrink-0 sm:items-center sm:justify-center">
-          {image ? (
+          {link.image ? (
             <img
-              src={image}
+              src={link.image}
               alt="Read link cover"
               className="object-cover rounded-l w-full h-full"
             />
           ) : (
-            <p className="text-5xl text-white">{name[0]}</p>
+            <p className="text-5xl text-white">{link.name[0]}</p>
           )}
         </div>
         <div className="mr-2 flex-grow py-2 pl-3 max-w-list-small sm:max-w-list-reg">
           <h2
             className="text-sm font-bold overflow-ellipsis overflow-hidden whitespace-nowrap"
-            dangerouslySetInnerHTML={{ __html: name }}
+            dangerouslySetInnerHTML={{ __html: link.name }}
           />
           <a
             className="text-xs block overflow-ellipsis overflow-hidden whitespace-nowrap mb-1"
-            href={link}
+            href={link.link}
             target="_blank"
             rel="noreferrer"
             onClick={handleClick}
           >
-            {link}
+            {link.link}
             {/* <div className="absolute inset-0" /> */}
           </a>
           <p
             className="text-sm break-normal max-w-xxs sm:max-w-xs line-clamp-2"
-            dangerouslySetInnerHTML={{ __html: description }}
+            dangerouslySetInnerHTML={{ __html: link.description }}
           />
           <div
             className={`text-xs italic mt-1 flex ${

@@ -74,17 +74,7 @@ const App = (): JSX.Element => {
   const LinksComponent = filteredLinks
     .filter((link) => !filterTags.length || checkTagsInFilterTags(link.tags))
     .map((link) => (
-      <ReadingLink
-        key={link._id}
-        name={link.name}
-        description={link.description}
-        linkId={link._id}
-        link={link.link}
-        isRead={link.isRead}
-        image={link.image}
-        tagsArr={link.tags}
-        setLinks={setLinks}
-      />
+      <ReadingLink key={link._id} link={link} setLinks={setLinks} />
     ));
 
   return (
