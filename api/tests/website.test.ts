@@ -279,7 +279,11 @@ describe("Get Site Info", () => {
       image: "",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
   test("It should retrieve link information: freeCodeCamp", async () => {
     const link = "https://www.freecodecamp.org/";
@@ -292,7 +296,11 @@ describe("Get Site Info", () => {
         "https://cdn.freecodecamp.org/platform/universal/fcc_meta_1920X1080-indigo.png",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
   test("It should retrieve link information: Article DpReview", async () => {
     const link =
@@ -308,7 +316,11 @@ describe("Get Site Info", () => {
         "https://1.img-dpreview.com/files/p/E~TS940x788~articles/8162395393/Nikon_Nissin.jpeg",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
   test("It should retrieve link information: freeCodeCamp news", async () => {
     const link =
@@ -323,7 +335,11 @@ describe("Get Site Info", () => {
         "https://www.freecodecamp.org/news/content/images/2021/11/microfrontends.png",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
   test("It should retrieve link information: freeCodeCamp forum post", async () => {
     const link = "https://forum.freecodecamp.org/t/mf-doom-tribute-page/484757";
@@ -336,7 +352,11 @@ describe("Get Site Info", () => {
         "https://aws1.discourse-cdn.com/freecodecamp/original/3X/2/0/206c254cf9e405bcddf6caea7f882dca146dcd3c.png",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
   test("It should retrieve link information: TypeScript Handbook chapter", async () => {
     const link =
@@ -349,7 +369,11 @@ describe("Get Site Info", () => {
       image: "",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
   test("It should retrieve link information: Jest using matchers", async () => {
     const link = "https://jestjs.io/docs/using-matchers";
@@ -362,7 +386,11 @@ describe("Get Site Info", () => {
       image: "https://jestjs.io/img/opengraph.png",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
   test("It should retrieve link information: TypeScript Handbook Narrowing", async () => {
     const link =
@@ -376,7 +404,11 @@ describe("Get Site Info", () => {
       image: "",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
   test("It should retrieve link information: Average joe cycling", async () => {
     const link = "https://averagejoecyclist.com/";
@@ -389,7 +421,11 @@ describe("Get Site Info", () => {
       image: "",
     };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
 });
 
@@ -402,6 +438,10 @@ describe("Get site file", () => {
 
     const desiredOutput = { success: "success" };
 
-    expect(response.data).toMatchObject(desiredOutput);
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
   });
 });

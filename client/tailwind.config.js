@@ -16,6 +16,9 @@ module.exports = {
         xxs: "14rem",
         "list-red": "300px",
         "list-small": "240px",
+      },
+      minHeight: {
+        reading: "5.5rem",
       }
     },
   },

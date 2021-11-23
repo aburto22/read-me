@@ -83,7 +83,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
 
   return (
     <li
-      className={`border border-gray-300 rounded flex mb-1 bg-gray-dark ${
+      className={`border border-gray-300 rounded flex mb-1 bg-gray-dark min-h-reading ${
         read && "border-green-500"
       }`}
     >
@@ -99,7 +99,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
             <p className="text-5xl text-white">{link.name[0]}</p>
           )}
         </div>
-        <div className="mr-2 flex-grow py-2 pl-3 max-w-list-small sm:max-w-list-reg">
+        <div className="mr-2 flex-grow py-2 pl-3 max-w-list-small sm:max-w-list-reg flex flex-col justify-center">
           <h2
             className="text-sm font-bold overflow-ellipsis overflow-hidden whitespace-nowrap"
             dangerouslySetInnerHTML={{ __html: link.name }}

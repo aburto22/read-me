@@ -72,7 +72,7 @@ export const getTitle = (site: string): string => {
 export const getDescription = (site: string): string => {
   const head = getHead(site);
 
-  const regex = /<meta[^<>]+?name="(?:og:)?description"[^<>]*?>/;
+  const regex = /<meta[^<>]+?name="(?:[A-Za-z]+:)?description"[^<>]*?>/;
 
   const match = head.match(regex);
 
@@ -146,7 +146,10 @@ export const getSiteFile = async (
   try {
     const res = await axios.get<string>(link);
 
-    await fs.writeFile(`./tests/html/${fileName}.html`, res.data);
+    await fs.writeFile(
+      `${__dirname}/../../tests/html/${fileName}.html`,
+      res.data
+    );
 
     return { type: "success", data: {} };
   } catch (err) {
