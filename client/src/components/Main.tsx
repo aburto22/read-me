@@ -92,7 +92,7 @@ const Main = (): JSX.Element => {
 
   return (
     <main className="flex flex-col items-start justify-center lg:flex-row px-2 w-full">
-      <div className="flex items-center mt-8 lg:mt-0 max-w-sm w-full mx-auto lg:mr-12 lg:ml-0 relative lg:h-screen">
+      <div className="flex items-center mt-8 max-w-sm w-full mx-auto lg:mr-12 lg:ml-0 relative lg:h-screen-navbar lg:mt-navbar">
         <div className="lg:fixed w-full max-w-sm lg:min-h-form-link">
           <h1 className="text-2xl mb-6 text-center">Read Me</h1>
           <LinkForm setLinks={setLinks} />

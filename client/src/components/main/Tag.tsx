@@ -24,8 +24,8 @@ const Tag = ({ tag, setFilterTags }: ITagProps): JSX.Element => {
     <li>
       <button
         type="button"
-        className={`px-2 py-1 m-1 text-sm border border-gray-500 bg-gray-dark rounded text-white opacity-70 ${
-          isActive && "opacity-100"
+        className={`px-2 py-1 m-1 text-sm border rounded border-gray-500 ${
+          isActive ? "bg-white text-gray-dark" : "bg-gray-dark text-white"
         }`}
         onClick={handleClick}
       >

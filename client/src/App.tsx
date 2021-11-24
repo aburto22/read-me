@@ -6,7 +6,7 @@ const Main = React.lazy(() => import("./components/Main"));
 const Login = React.lazy(() => import("./components/Login"));
 
 const App = (): JSX.Element => (
-  <div className="bg-gray-primary text-white">
+  <div className="bg-gray-primary text-white min-h-screen">
     <Navbar />
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>

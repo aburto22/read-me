@@ -24,6 +24,7 @@ module.exports = {
       },
       spacing: {
         navbar: "3.5rem",
+        "screen-navbar": "calc(100vh - 3.5rem)"
       }
     },
   },
