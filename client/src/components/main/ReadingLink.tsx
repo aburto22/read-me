@@ -1,8 +1,8 @@
 /* eslint-disable react/no-danger */
 import { useState, useRef, useEffect } from "react";
-import Svg from "./common/svg";
-import { deleteLink, setReadLink, setLinkTags } from "../api/api";
-import { tagsStringToArr, tagsArrToString } from "../api/tags";
+import Svg from "../common/svg";
+import { deleteLink, setReadLink, setLinkTags } from "../../api/api";
+import { tagsStringToArr, tagsArrToString } from "../../api/tags";
 
 interface IReadingLinkParams {
   link: ILink;

@@ -19,6 +19,11 @@ module.exports = {
       },
       minHeight: {
         reading: "5.5rem",
+        "form-link": "28rem",
+        "screen-navbar": "calc(100vh - 3.5rem)"
+      },
+      spacing: {
+        navbar: "3.5rem",
       }
     },
   },

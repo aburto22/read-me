@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { addLink } from "../api/api";
-import Svg from "./common/svg";
-import { tagsStringToArr } from "../api/tags";
+import { addLink } from "../../api/api";
+import Svg from "../common/svg";
+import { tagsStringToArr } from "../../api/tags";
 
 type LinkFormProps = {
   setLinks: (links: ILink[]) => void;
