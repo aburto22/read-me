@@ -72,7 +72,8 @@ export const getTitle = (site: string): string => {
 export const getDescription = (site: string): string => {
   const head = getHead(site);
 
-  const regex = /<meta[^<>]+?name="(?:[A-Za-z]+:)?description"[^<>]*?>/;
+  const regex =
+    /<meta[^<>]+(?:name|property)="(?:[A-Za-z]+:)?description"[^<>]*>/g;
 
   const match = head.match(regex);
 
@@ -80,9 +81,14 @@ export const getDescription = (site: string): string => {
     return "";
   }
 
+  const longestMatch = match.reduce(
+    (preferred, str) => (str.length > preferred.length ? str : preferred),
+    ""
+  );
+
   const regex1 = /content="([^<>]+?)"/;
 
-  const match1 = match[0].match(regex1);
+  const match1 = longestMatch.match(regex1);
 
   if (!match1) {
     return "";
@@ -97,7 +103,7 @@ export const getDescription = (site: string): string => {
   return finalString;
 };
 
-export const getImageSrc = (site: string): string => {
+export const getImageSrc = (site: string, link = ""): string => {
   const head = getHead(site);
 
   const regex = /<meta[^<>]*?property="(?:og:)?image"[^<>]*?>/;
@@ -116,7 +122,13 @@ export const getImageSrc = (site: string): string => {
     return "";
   }
 
-  return match1[1];
+  if (/http/.test(match1[1])) {
+    return match1[1];
+  }
+
+  const domain = getDomain(link);
+
+  return domain.slice(0, -1) + match1[1];
 };
 
 export const getSiteInfo = async (link: string): Promise<IWebsiteResponse> => {
@@ -125,7 +137,7 @@ export const getSiteInfo = async (link: string): Promise<IWebsiteResponse> => {
 
     const title = getTitle(res.data);
     const description = getDescription(res.data);
-    const image = getImageSrc(res.data);
+    const image = getImageSrc(res.data, link);
 
     return {
       type: "success",

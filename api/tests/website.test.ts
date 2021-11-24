@@ -436,10 +436,10 @@ describe("Get site file", () => {
     const fileName = "DpReviewArticle";
     const response = await getSiteFile(link, fileName);
 
-    const desiredOutput = { success: "success" };
+    const desiredOutput = { type: "success" };
 
     if (response.type === "success") {
-      expect(response.data).toMatchObject(desiredOutput);
+      expect(response).toMatchObject(desiredOutput);
     } else {
       fail(response.message);
     }
