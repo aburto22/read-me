@@ -265,6 +265,77 @@ describe("Get Description", () => {
 
     expect(response).toMatch(desiredOutput);
   });
+  test('It sould retrieve description for a tag with twitter before description: <meta content="[some text]" name="twitter:description"/>', () => {
+    const input =
+      '<head>\n<meta name="twitter:description" content="Some description content">\n</head>';
+    const response = getDescription(input);
+
+    const desiredOutput = "Some description content";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It sould retrieve description for a tag where description is not between double quotes: <meta content="[some text]" name=description/>', () => {
+    const input =
+      '<head>\n<meta name=description content="Some description content">\n</head>';
+    const response = getDescription(input);
+
+    const desiredOutput = "Some description content";
+
+    expect(response).toMatch(desiredOutput);
+  });
+});
+
+describe("Get Image Src", () => {
+  test('It sould retrieve image src for a standard tag: <meta property="image" content="[image src]">', () => {
+    const input =
+      '<head>\n<meta property="image" content="https://mysite.com/image.jpg">\n</head>';
+    const link = "https://mysite.com/";
+    const response = getImageSrc(input, link);
+
+    const desiredOutput = "https://mysite.com/image.jpg";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It sould retrieve image src for a reversed tag: <meta content="[image src]" property="image">', () => {
+    const input =
+      '<head>\n<meta content="https://mysite.com/image.jpg" property="image">\n</head>';
+    const link = "https://mysite.com/";
+    const response = getImageSrc(input, link);
+
+    const desiredOutput = "https://mysite.com/image.jpg";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It sould retrieve image src for a tag with text og image: <meta content="[image src]" property="og:image">', () => {
+    const input =
+      '<head>\n<meta content="https://mysite.com/image.jpg" property="og:image">\n</head>';
+    const link = "https://mysite.com/";
+    const response = getImageSrc(input, link);
+
+    const desiredOutput = "https://mysite.com/image.jpg";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It sould retrieve image src for a tag where property doesn\'t contain double quotes: <meta content="[image src]" property=image>', () => {
+    const input =
+      '<head>\n<meta content="https://mysite.com/image.jpg" property=image>\n</head>';
+    const link = "https://mysite.com/";
+    const response = getImageSrc(input, link);
+
+    const desiredOutput = "https://mysite.com/image.jpg";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It sould retrieve image src for relative path: <meta content="[image src]" property="image">', () => {
+    const input =
+      '<head>\n<meta content="/image.jpg" property="image">\n</head>';
+    const link = "https://mysite.com/";
+    const response = getImageSrc(input, link);
+
+    const desiredOutput = "https://mysite.com/image.jpg";
+
+    expect(response).toMatch(desiredOutput);
+  });
 });
 
 describe("Get Site Info", () => {
