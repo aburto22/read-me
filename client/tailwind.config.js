@@ -10,6 +10,8 @@ module.exports = {
         },
         blue: {
           "image": "#194bff",
+          "link": "#578fff",
+          "hover": "#3863ff",
         }
       },
       maxWidth: {
