@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 
 const Main = React.lazy(() => import("./components/Main"));
 const Login = React.lazy(() => import("./components/Login"));
+const Register = React.lazy(() => import("./components/Register"));
 
 const App = (): JSX.Element => (
   <div className="bg-gray-primary text-white min-h-screen">
@@ -12,6 +13,7 @@ const App = (): JSX.Element => (
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Suspense>
   </div>

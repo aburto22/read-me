@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import LinkForm from "./main/LinkForm";
-import { getLinks } from "../api/api";
+import { getLinks } from "../api/apiLinks";
 import ReadingLink from "./main/ReadingLink";
 import Tag from "./main/Tag";
 import Filters from "./main/Filters";

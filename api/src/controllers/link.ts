@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Links from "../models/Links";
+import User from "../models/User";
 import { ILink, IDBUser, IDBLink, IResponseError } from "../types/global";
 import { getSiteInfo, validateLink, appendHTTPS } from "../helpers/website";
 
@@ -7,8 +7,8 @@ export const getLinks = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[]>> => {
-  const user = "user";
-  const doc: IDBUser | null = await Links.findOne({ user }).exec();
+  const username = "username";
+  const doc: IDBUser | null = await User.findOne({ username }).exec();
 
   if (!doc) {
     return res.json([]);
@@ -21,7 +21,7 @@ export const addLink = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[] | IResponseError>> => {
-  const user = "user";
+  const username = "username";
   const { link, tags }: { link: string; tags: string[] } = req.body;
 
   const httpsLink = appendHTTPS(link);
@@ -52,7 +52,7 @@ export const addLink = async (
     tags: tags || [],
   };
 
-  const doc: IDBUser | null = await Links.findOne({ user }).exec();
+  const doc: IDBUser | null = await User.findOne({ username }).exec();
 
   if (!doc) {
     return res.json([]);
@@ -69,10 +69,10 @@ export const deleteLink = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[]>> => {
-  const user = "user";
+  const username = "username";
   const { linkId }: { linkId: string } = req.body;
 
-  const doc: IDBUser | null = await Links.findOne({ user }).exec();
+  const doc: IDBUser | null = await User.findOne({ username }).exec();
 
   if (!doc) {
     return res.json([]);
@@ -89,10 +89,10 @@ export const updateLink = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[]>> => {
-  const user = "user";
+  const username = "username";
   const { linkId, bool }: { linkId: string; bool: boolean } = req.body;
 
-  const doc: IDBUser | null = await Links.findOne({ user }).exec();
+  const doc: IDBUser | null = await User.findOne({ username }).exec();
 
   if (!doc) {
     return res.json([]);

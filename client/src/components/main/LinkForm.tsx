@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addLink } from "../../api/api";
+import { addLink } from "../../api/apiLinks";
 import Svg from "../common/svg";
 import { tagsStringToArr } from "../../api/tags";
 

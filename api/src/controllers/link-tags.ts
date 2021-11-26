@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Links from "../models/Links";
+import User from "../models/User";
 import { ILink, IDBUser } from "../types/global";
 
 export const updateTags = async (
@@ -9,7 +9,7 @@ export const updateTags = async (
   const user = "user";
   const { linkId, tags }: { linkId: string; tags: string[] } = req.body;
 
-  const doc: IDBUser | null = await Links.findOne({ user }).exec();
+  const doc: IDBUser | null = await User.findOne({ user }).exec();
 
   if (!doc) {
     return res.json([]);

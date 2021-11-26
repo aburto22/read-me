@@ -1,8 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 import { IDBUser } from "../types/global";
 
-const LinksSchema = new Schema<IDBUser>({
-  user: { type: String, default: "user" },
+const UserSchema = new Schema<IDBUser>({
+  username: { type: String, required: true },
+  hashedPassword: { type: String, required: true },
+  salt: { type: String, required: true },
   links: [
     {
       link: { type: String, required: true },
@@ -15,4 +17,4 @@ const LinksSchema = new Schema<IDBUser>({
   ],
 });
 
-export default mongoose.model("Links", LinksSchema);
+export default mongoose.model("User", UserSchema);

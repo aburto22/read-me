@@ -1,37 +1,48 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { createUser } from "../api/apiUser";
 
 const Register = (): JSX.Element => {
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [verification, setVerification] = useState<string>("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    console.log(email);
+
+    if (
+      username.length > 5 &&
+      password.length > 5 &&
+      verification === password
+    ) {
+      await createUser(username, password);
+      setUsername("");
+      setPassword("");
+      setVerification("");
+      navigate("/");
+    }
   };
 
   const btnActive =
-    /\w+@\w+\.\w+/.test(email) &&
-    password.length > 5 &&
-    verification.length > 5;
+    username.length > 5 && password.length > 5 && verification.length > 5;
 
   return (
     <div className="lg:pt-navbar max-w-screen-sm mx-auto min-h-screen-navbar flex flex-col justify-around items-center">
       <div className="max-w-xs px-6 py-8 bg-gray-dark w-full">
         <form className="mb-6">
-          <h1 className="text-xl text-center mb-6">Login</h1>
-          <label htmlFor="email" className="flex flex-col mb-4">
-            <span className="text-sm mb-1">email:</span>
+          <h1 className="text-xl text-center mb-6">Sign Up</h1>
+          <label htmlFor="username" className="flex flex-col mb-4">
+            <span className="text-sm mb-1">username:</span>
             <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              type="text"
+              name="username"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
               className="text-gray-dark py-1 px-2 rounded"
             />
           </label>
-          <label htmlFor="password" className="flex flex-col mb-4">
+          <label htmlFor="password" className="flex flex-col mb-2">
             <span className="text-sm mb-1">password:</span>
             <input
               type="password"
@@ -42,8 +53,8 @@ const Register = (): JSX.Element => {
               autoComplete="off"
             />
           </label>
-          <label htmlFor="password" className="flex flex-col mb-6">
-            <span className="text-sm mb-1">password:</span>
+          <label htmlFor="verification" className="flex flex-col mb-6">
+            <span className="text-sm mb-1">repeat password:</span>
             <input
               type="password"
               name="verification"

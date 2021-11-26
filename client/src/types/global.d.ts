@@ -11,3 +11,7 @@ declare interface ILink {
 declare interface IApiError {
   error: { message: string };
 }
+
+declare interface IUsername {
+  username: string;
+}

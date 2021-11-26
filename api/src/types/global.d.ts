@@ -4,6 +4,10 @@ declare interface IResponseError {
   error: { message: string };
 }
 
+declare interface IUsername {
+  username: string;
+}
+
 declare interface ILink {
   name: string;
   description: string;
@@ -23,6 +27,8 @@ declare interface IDBLink extends Document {
 }
 
 declare interface IDBUser extends Document {
-  user: string;
+  username: string;
+  hashedPassword: string;
+  salt: string;
   links: Array<IDBLink>;
 }
