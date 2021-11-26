@@ -73,7 +73,7 @@ export const getDescription = (site: string): string => {
   const head = getHead(site);
 
   const regex =
-    /<meta[^<>]+(?:name|property)="(?:[A-Za-z]+:)?description"[^<>]*>/g;
+    /<meta[^<>]+(?:name|property)="?(?:[A-Za-z]+:)?description"?[^<>]*>/g;
 
   const match = head.match(regex);
 
@@ -106,7 +106,7 @@ export const getDescription = (site: string): string => {
 export const getImageSrc = (site: string, link = ""): string => {
   const head = getHead(site);
 
-  const regex = /<meta[^<>]*?property="(?:og:)?image"[^<>]*?>/;
+  const regex = /<meta[^<>]*?property="?(?:[A-Za-z]+:)?image"?[^<>]*?>/;
 
   const match = head.match(regex);
 
