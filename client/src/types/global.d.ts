@@ -12,6 +12,6 @@ declare interface IApiError {
   error: { message: string };
 }
 
-declare interface IUsername {
-  username: string;
+declare interface IUserId {
+  userId: string;
 }

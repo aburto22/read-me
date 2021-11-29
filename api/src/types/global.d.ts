@@ -1,34 +1,41 @@
 import { Document } from "mongoose";
 
-declare interface IResponseError {
-  error: { message: string };
-}
+declare global {
+  namespace Express {
+    interface User {
+      username: string;
+      _id?: string;
+    }
+  }
+  interface IResponseError {
+    error: { message: string };
+  }
 
-declare interface IUsername {
-  username: string;
-}
+  interface IUserId {
+    userId: string;
+  }
 
-declare interface ILink {
-  name: string;
-  description: string;
-  link: string;
-  isRead: boolean;
-  image: string;
-  tags: string[];
-}
+  interface ILink {
+    name: string;
+    description: string;
+    link: string;
+    isRead: boolean;
+    image: string;
+    tags: string[];
+  }
 
-declare interface IDBLink extends Document {
-  name: string;
-  description: string;
-  link: string;
-  isRead: boolean;
-  image: string;
-  tags: string[];
-}
+  interface IDBLink extends Document {
+    name: string;
+    description: string;
+    link: string;
+    isRead: boolean;
+    image: string;
+    tags: string[];
+  }
 
-declare interface IDBUser extends Document {
-  username: string;
-  hashedPassword: string;
-  salt: string;
-  links: Array<IDBLink>;
+  interface IDBUser extends Document {
+    username: string;
+    hashedPassword: string;
+    links: Array<IDBLink>;
+  }
 }

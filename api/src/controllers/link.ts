@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import User from "../models/User";
-import { ILink, IDBUser, IDBLink, IResponseError } from "../types/global";
 import { getSiteInfo, validateLink, appendHTTPS } from "../helpers/website";
 
 export const getLinks = async (

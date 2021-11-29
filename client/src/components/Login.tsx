@@ -1,29 +1,36 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { userLogin } from "../api/apiUser";
 
 const Login = (): JSX.Element => {
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    console.log(email);
+
+    if (username.length > 5 && password.length > 5) {
+      const userId = await userLogin(username, password);
+      console.log("userId: ", userId);
+      setUsername("");
+      setPassword("");
+    }
   };
 
-  const btnActive = /\w+@\w+\.\w+/.test(email) && password.length > 5;
+  const btnActive = username.length > 5 && password.length > 5;
 
   return (
     <div className="lg:pt-navbar max-w-screen-sm mx-auto min-h-screen-navbar flex flex-col justify-around items-center">
       <div className="max-w-xs px-6 py-8 bg-gray-dark w-full">
         <form className="mb-6">
           <h1 className="text-xl text-center mb-6">Login</h1>
-          <label htmlFor="email" className="flex flex-col mb-4">
-            <span className="text-sm mb-1">email:</span>
+          <label htmlFor="username" className="flex flex-col mb-4">
+            <span className="text-sm mb-1">username:</span>
             <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              type="text"
+              name="username"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
               className="text-gray-dark py-1 px-2 rounded"
             />
           </label>

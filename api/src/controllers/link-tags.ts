@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import User from "../models/User";
-import { ILink, IDBUser } from "../types/global";
 
 export const updateTags = async (
   req: Request,

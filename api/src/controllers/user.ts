@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import crypto from "crypto";
+import bcrypt from "bcrypt";
 import User from "../models/User";
-import { IDBUser, IUsername, IResponseError } from "../types/global";
 
 export const createUser = async (
   req: Request,
   res: Response
-): Promise<Response<IUsername | IResponseError | undefined>> => {
+): Promise<Response<IUserId | IResponseError>> => {
   const { username, password } = req.body;
 
   const doc: IDBUser | null = await User.findOne({ username }).exec();
@@ -16,30 +15,27 @@ export const createUser = async (
     return res.json(error);
   }
 
-  const salt = crypto.randomBytes(16).toString("base64");
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  crypto.pbkdf2(
-    password,
-    salt,
-    310000,
-    32,
-    "sha256",
-    async (err, hashedPassword) => {
-      if (err) {
-        const error = { error: { message: err.message } };
-        return res.json(error);
-      }
+  const newUser = new User({
+    username,
+    hashedPassword,
+    links: [],
+  });
 
-      const newUser = new User({
-        username,
-        hashedPassword: hashedPassword.toString("base64"),
-        salt,
-        links: [],
-      });
+  const user = await newUser.save();
 
-      const user = await newUser.save();
+  return res.json({ userId: user._id });
+};
 
-      return res.json({ username: user.username });
-    }
-  );
+export const checkAuth = (
+  req: Request,
+  res: Response
+): Response<IUserId | IResponseError> => {
+  if (!req.user) {
+    return res.json({ error: { message: "User is not signed in." } });
+  }
+
+  const userId = req.user._id;
+  return res.json({ userId });
 };
