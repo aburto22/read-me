@@ -12,6 +12,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
   const [tags, setTags] = useState<string>("");
   const [isTagsShowing, setIsTagsShowing] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChangeLink = (event: React.FormEvent<HTMLInputElement>): void => {
     setLink(event.currentTarget.value);
@@ -24,6 +25,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
   const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
     const tagsArr = tagsStringToArr(tags);
+    setLoading(true);
     const data = await addLink(link, tagsArr);
     if (!(data instanceof Error)) {
       setLink("");
@@ -33,6 +35,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
     } else {
       setError(data.message);
     }
+    setLoading(false);
   };
 
   const isLinkValid = /^[^<>]+\.[^<>]+$/.test(link);
@@ -85,12 +88,16 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
       </div>
       <button
         type="submit"
-        disabled={!isLinkValid}
-        className={`py-2 px-4 border border-gray-500 bg-gray-dark rounded text-white w-max mx-auto ${
-          !isLinkValid && "opacity-50 cursor-default"
+        disabled={!isLinkValid || loading}
+        className={`py-2 px-4 border border-gray-500 w-24 bg-gray-dark rounded text-white mx-auto flex justify-center ${
+          (!isLinkValid || loading) && "opacity-50 cursor-default"
         }`}
       >
-        Create
+        {loading ? (
+          <Svg name="spinner" className="text-white w-6 h-6 animate-spin" />
+        ) : (
+          "Create"
+        )}
       </button>
     </form>
   );
