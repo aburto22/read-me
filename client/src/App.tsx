@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { checkAuth } from "./api/apiUser";
 import UserContext from "./context/UserContext";
+import RequireAuth from "./components/common/RequireAuth";
+import OnlyNonAuth from "./components/common/OnlyNonAuth";
 
 const Main = React.lazy(() => import("./components/Main"));
 const Login = React.lazy(() => import("./components/Login"));
@@ -29,9 +31,30 @@ const App = (): JSX.Element => {
         <Navbar />
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Main />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <OnlyNonAuth>
+                  <Login />
+                </OnlyNonAuth>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <OnlyNonAuth>
+                  <Register />
+                </OnlyNonAuth>
+              }
+            />
           </Routes>
         </Suspense>
       </div>
