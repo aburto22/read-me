@@ -15,12 +15,12 @@ const Login = (): JSX.Element => {
 
     if (username.length > 5 && password.length > 5) {
       const data = await userLogin(username, password);
-      if (!data) {
-        setErrorMessage("Wrong username or password");
+      if (data === null || data instanceof Error) {
+        setErrorMessage(data ? data.message : "Wrong username or password");
       } else {
         setUsername("");
         setPassword("");
-        setUserId(data.userId);
+        setUserId(data);
         navigate("/");
       }
     }

@@ -8,7 +8,18 @@ declare global {
     }
   }
   interface IResponseError {
-    error: { message: string };
+    type: "error";
+    message: string;
+  }
+
+  interface IResponseUserId {
+    type: "success";
+    userId: string | null;
+  }
+
+  interface IResponseLinks {
+    type: "success";
+    links: ILink[];
   }
 
   interface IUserId {

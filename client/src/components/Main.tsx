@@ -18,7 +18,9 @@ const Main = (): JSX.Element => {
     setIsLoading(true);
     getLinks().then((data) => {
       setIsLoading(false);
-      setLinks(data);
+      if (!(data instanceof Error)) {
+        setLinks(data);
+      }
     });
   }, []);
 

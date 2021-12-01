@@ -11,7 +11,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
   const [link, setLink] = useState<string>("");
   const [tags, setTags] = useState<string>("");
   const [isTagsShowing, setIsTagsShowing] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>("I am an error");
 
   const handleChangeLink = (event: React.FormEvent<HTMLInputElement>): void => {
     setLink(event.currentTarget.value);
@@ -21,19 +21,18 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
     setTags(event.currentTarget.value);
   };
 
-  const handleSubmit = (event: React.FormEvent): void => {
+  const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
     const tagsArr = tagsStringToArr(tags);
-    addLink(link, tagsArr)
-      .then((data) => {
-        setLink("");
-        setError("");
-        setTags("");
-        setLinks(data);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    const data = await addLink(link, tagsArr);
+    if (!(data instanceof Error)) {
+      setLink("");
+      setError("");
+      setTags("");
+      setLinks(data);
+    } else {
+      setError(data.message);
+    }
   };
 
   const isLinkValid = /^[^<>]+\.[^<>]+$/.test(link);

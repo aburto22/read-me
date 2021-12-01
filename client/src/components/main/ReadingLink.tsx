@@ -38,22 +38,28 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
   }, [isEditingTags]);
 
   const handleDelete = async (): Promise<void> => {
-    const links = await deleteLink(link._id);
-    setLinks(links);
+    const data = await deleteLink(link._id);
+    if (!(data instanceof Error)) {
+      setLinks(data);
+    }
   };
 
   const handleClick = async (): Promise<void> => {
     if (!link.isRead) {
       setRead(true);
-      const links = await setReadLink(link._id, true);
-      setLinks(links);
+      const data = await setReadLink(link._id, true);
+      if (!(data instanceof Error)) {
+        setLinks(data);
+      }
     }
   };
 
   const handleReadToggle = async (): Promise<void> => {
     setRead((val) => !val);
-    const links = await setReadLink(link._id, !read);
-    setLinks(links);
+    const data = await setReadLink(link._id, !read);
+    if (!(data instanceof Error)) {
+      setLinks(data);
+    }
   };
 
   const handleInputToggle = (): void => {
@@ -71,8 +77,10 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
     const tagsStr = tagsArrToString(tagsArr);
     setInputTags(tagsStr);
     setIsEditingTags(false);
-    const links = await setLinkTags(link._id, tagsArr);
-    setLinks(links);
+    const data = await setLinkTags(link._id, tagsArr);
+    if (!(data instanceof Error)) {
+      setLinks(data);
+    }
   };
 
   const handleInputKey = (event: React.KeyboardEvent): void => {

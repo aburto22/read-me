@@ -8,7 +8,9 @@ const Navbar = (): JSX.Element => {
 
   const handleLogout = async (): Promise<void> => {
     const data = await userLogout();
-    setUserId(data ? data.userId : "");
+    if (!(data instanceof Error)) {
+      setUserId(data || "");
+    }
   };
 
   return (

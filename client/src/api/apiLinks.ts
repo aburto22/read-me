@@ -1,14 +1,20 @@
 import axios, { AxiosResponse } from "axios";
+import { handleAxiosError, handleAxiosResponseLinks } from "../helpers/axios";
 
-export const getLinks = (): Promise<ILink[]> =>
+export const getLinks = (): Promise<ILink[] | Error> =>
   axios({
     method: "get",
     url: "/links",
     baseURL: "http://localhost:5000",
     withCredentials: true,
-  }).then((res: AxiosResponse<ILink[]>) => res.data);
+  })
+    .then((res: AxiosResponse<ILink[]>) => res.data)
+    .catch(handleAxiosError);
 
-export const addLink = (link: string, tags: string[]): Promise<ILink[]> =>
+export const addLink = (
+  link: string,
+  tags: string[]
+): Promise<ILink[] | Error> =>
   axios({
     method: "post",
     url: "/links",
@@ -16,17 +22,10 @@ export const addLink = (link: string, tags: string[]): Promise<ILink[]> =>
     data: { link, tags },
     withCredentials: true,
   })
-    .then((res: AxiosResponse<ILink[] | IApiError>) => {
-      if ("error" in res.data) {
-        throw new Error(res.data.error.message);
-      }
-      return res.data;
-    })
-    .catch((err: Error) => {
-      throw err;
-    });
+    .then(handleAxiosResponseLinks)
+    .catch(handleAxiosError);
 
-export const deleteLink = (linkId: string): Promise<ILink[]> =>
+export const deleteLink = (linkId: string): Promise<ILink[] | Error> =>
   axios({
     method: "delete",
     url: "/links",
@@ -35,20 +34,30 @@ export const deleteLink = (linkId: string): Promise<ILink[]> =>
     withCredentials: true,
   }).then((res: AxiosResponse<ILink[]>) => res.data);
 
-export const setReadLink = (linkId: string, bool: boolean): Promise<ILink[]> =>
+export const setReadLink = (
+  linkId: string,
+  bool: boolean
+): Promise<ILink[] | Error> =>
   axios({
     method: "put",
     url: "/links",
     baseURL: "http://localhost:5000",
     data: { linkId, bool },
     withCredentials: true,
-  }).then((res: AxiosResponse<ILink[]>) => res.data);
+  })
+    .then(handleAxiosResponseLinks)
+    .catch(handleAxiosError);
 
-export const setLinkTags = (linkId: string, tags: string[]): Promise<ILink[]> =>
+export const setLinkTags = (
+  linkId: string,
+  tags: string[]
+): Promise<ILink[] | Error> =>
   axios({
     method: "put",
     url: "/links",
     baseURL: "http://localhost:5000",
     data: { linkId, tags },
     withCredentials: true,
-  }).then((res: AxiosResponse<ILink[]>) => res.data);
+  })
+    .then(handleAxiosResponseLinks)
+    .catch(handleAxiosError);

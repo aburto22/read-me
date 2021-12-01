@@ -1,39 +1,50 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import User from "../models/User";
 
 export const createUser = async (
   req: Request,
-  res: Response
-): Promise<Response<IUserId | IResponseError>> => {
-  const { username, password } = req.body;
+  res: Response,
+  next: NextFunction
+): Promise<Response<IResponseUserId> | void> => {
+  try {
+    const { username, password } = req.body;
 
-  const doc: IDBUser | null = await User.findOne({ username }).exec();
+    const doc: IDBUser | null = await User.findOne({ username }).exec();
 
-  if (doc) {
-    const error = { error: { message: "Username already exists." } };
-    return res.json(error);
+    if (doc) {
+      const message = "Username already exists.";
+      throw new Error(message);
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      username,
+      hashedPassword,
+      links: [],
+    });
+
+    const user = await newUser.save();
+
+    return res.json({ type: "success", userId: user._id });
+  } catch (err) {
+    return next(err);
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const newUser = new User({
-    username,
-    hashedPassword,
-    links: [],
-  });
-
-  const user = await newUser.save();
-
-  return res.json({ userId: user._id });
 };
 
-export const checkAuth = (req: Request, res: Response): Response<IUserId> => {
+export const checkAuth = (
+  req: Request,
+  res: Response
+): Response<IResponseUserId> => {
   const userId = req.user ? req.user._id : null;
-  return res.json({ userId });
+  return res.json({ type: "success", userId });
 };
 
-export const userLogout = (req: Request, res: Response): Response<IUserId> => {
+export const userLogout = (
+  req: Request,
+  res: Response
+): Response<IResponseUserId> => {
   req.logout();
-  return res.json({ userId: null });
+  return res.json({ type: "success", userId: null });
 };

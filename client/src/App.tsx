@@ -18,8 +18,12 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     checkAuth().then((data) => {
-      if (data && data.userId) {
-        setUserId(data.userId);
+      if (data instanceof Error) {
+        throw data;
+      }
+
+      if (data) {
+        setUserId(data);
       }
     });
   }, []);

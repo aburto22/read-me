@@ -6,6 +6,7 @@ const Register = (): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [verification, setVerification] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -16,11 +17,15 @@ const Register = (): JSX.Element => {
       password.length > 5 &&
       verification === password
     ) {
-      await createUser(username, password);
-      setUsername("");
-      setPassword("");
-      setVerification("");
-      navigate("/");
+      const data = await createUser(username, password);
+      if (data === null || data instanceof Error) {
+        setErrorMessage(data ? data.message : "Wrong username or password");
+      } else {
+        setUsername("");
+        setPassword("");
+        setVerification("");
+        navigate("/");
+      }
     }
   };
 
@@ -31,8 +36,11 @@ const Register = (): JSX.Element => {
     <div className="lg:pt-navbar max-w-screen-sm mx-auto min-h-screen-navbar flex flex-col justify-around items-center">
       <div className="max-w-xs px-6 py-8 bg-gray-dark w-full">
         <form className="mb-6">
-          <h1 className="text-xl text-center mb-6">Sign Up</h1>
-          <label htmlFor="username" className="flex flex-col mb-4">
+          <h1 className="text-xl text-center mb-4">Sign Up</h1>
+          <p className="text-xs text-red-500 mb-2 text-center">
+            {errorMessage}
+          </p>
+          <label htmlFor="username" className="flex flex-col mb-4 mt-2">
             <span className="text-sm mb-1">username:</span>
             <input
               type="text"

@@ -9,9 +9,18 @@ declare interface ILink {
 }
 
 declare interface IApiError {
-  error: { message: string };
+  type: "error";
+  message: string;
 }
 
-declare interface IUserId {
-  userId: string;
+declare interface IApiUserId {
+  type: "success";
+  userId: string | null;
 }
+
+declare interface IApiLinks {
+  type: "success";
+  links: ILink[];
+}
+
+declare type IUserId = string | null;
