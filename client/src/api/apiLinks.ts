@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { handleAxiosError, handleAxiosResponseLinks } from "../helpers/axios";
 
 export const getLinks = (): Promise<ILink[] | Error> =>
@@ -32,7 +32,9 @@ export const deleteLink = (linkId: string): Promise<ILink[] | Error> =>
     baseURL: "http://localhost:5000",
     data: { linkId },
     withCredentials: true,
-  }).then((res: AxiosResponse<ILink[]>) => res.data);
+  })
+    .then(handleAxiosResponseLinks)
+    .catch(handleAxiosError);
 
 export const setReadLink = (
   linkId: string,
