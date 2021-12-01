@@ -32,10 +32,6 @@ export const checkAuth = (
   req: Request,
   res: Response
 ): Response<IUserId | IResponseError> => {
-  if (!req.user) {
-    return res.json({ error: { message: "User is not signed in." } });
-  }
-
-  const userId = req.user._id;
+  const userId = req.user ? req.user._id : null;
   return res.json({ userId });
 };

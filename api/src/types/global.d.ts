@@ -12,7 +12,7 @@ declare global {
   }
 
   interface IUserId {
-    userId: string;
+    userId: string | null;
   }
 
   interface ILink {
