@@ -6,8 +6,14 @@ export const getLinks = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[]>> => {
-  const username = "username";
-  const doc: IDBUser | null = await User.findOne({ username }).exec();
+  if (!req.user) {
+    const error = { error: { message: "User is not logged-in" } };
+    return res.json(error);
+  }
+
+  const userId = req.user._id;
+
+  const doc: IDBUser | null = await User.findById(userId).exec();
 
   if (!doc) {
     return res.json([]);
@@ -20,7 +26,13 @@ export const addLink = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[] | IResponseError>> => {
-  const username = "username";
+  if (!req.user) {
+    const error = { error: { message: "User is not logged-in" } };
+    return res.json(error);
+  }
+
+  const userId = req.user._id;
+
   const { link, tags }: { link: string; tags: string[] } = req.body;
 
   const httpsLink = appendHTTPS(link);
@@ -51,7 +63,7 @@ export const addLink = async (
     tags: tags || [],
   };
 
-  const doc: IDBUser | null = await User.findOne({ username }).exec();
+  const doc: IDBUser | null = await User.findById(userId).exec();
 
   if (!doc) {
     return res.json([]);
@@ -68,10 +80,15 @@ export const deleteLink = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[]>> => {
-  const username = "username";
+  if (!req.user) {
+    const error = { error: { message: "User is not logged-in" } };
+    return res.json(error);
+  }
+
+  const userId = req.user._id;
   const { linkId }: { linkId: string } = req.body;
 
-  const doc: IDBUser | null = await User.findOne({ username }).exec();
+  const doc: IDBUser | null = await User.findById(userId).exec();
 
   if (!doc) {
     return res.json([]);
@@ -100,12 +117,18 @@ export const updateLink = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[]>> => {
-  const username = "username";
+  if (!req.user) {
+    const error = { error: { message: "User is not logged-in" } };
+    return res.json(error);
+  }
+
+  const userId = req.user._id;
+
   const data: IRequestUpdateLink = req.body;
 
   const { linkId } = data;
 
-  const doc: IDBUser | null = await User.findOne({ username }).exec();
+  const doc: IDBUser | null = await User.findById(userId).exec();
 
   if (!doc) {
     return res.json([]);

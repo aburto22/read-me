@@ -5,6 +5,7 @@ export const getLinks = (): Promise<ILink[]> =>
     method: "get",
     url: "/links",
     baseURL: "http://localhost:5000",
+    withCredentials: true,
   }).then((res: AxiosResponse<ILink[]>) => res.data);
 
 export const addLink = (link: string, tags: string[]): Promise<ILink[]> =>
@@ -13,6 +14,7 @@ export const addLink = (link: string, tags: string[]): Promise<ILink[]> =>
     url: "/links",
     baseURL: "http://localhost:5000",
     data: { link, tags },
+    withCredentials: true,
   })
     .then((res: AxiosResponse<ILink[] | IApiError>) => {
       if ("error" in res.data) {
@@ -30,6 +32,7 @@ export const deleteLink = (linkId: string): Promise<ILink[]> =>
     url: "/links",
     baseURL: "http://localhost:5000",
     data: { linkId },
+    withCredentials: true,
   }).then((res: AxiosResponse<ILink[]>) => res.data);
 
 export const setReadLink = (linkId: string, bool: boolean): Promise<ILink[]> =>
@@ -38,6 +41,7 @@ export const setReadLink = (linkId: string, bool: boolean): Promise<ILink[]> =>
     url: "/links",
     baseURL: "http://localhost:5000",
     data: { linkId, bool },
+    withCredentials: true,
   }).then((res: AxiosResponse<ILink[]>) => res.data);
 
 export const setLinkTags = (linkId: string, tags: string[]): Promise<ILink[]> =>
@@ -46,4 +50,5 @@ export const setLinkTags = (linkId: string, tags: string[]): Promise<ILink[]> =>
     url: "/links",
     baseURL: "http://localhost:5000",
     data: { linkId, tags },
+    withCredentials: true,
   }).then((res: AxiosResponse<ILink[]>) => res.data);
