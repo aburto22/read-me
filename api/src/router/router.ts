@@ -3,7 +3,7 @@ import passport from "passport";
 import { getIndex } from "../controllers/index";
 import { addLink, getLinks, deleteLink, updateLink } from "../controllers/link";
 import { updateTags } from "../controllers/link-tags";
-import { createUser, checkAuth } from "../controllers/user";
+import { createUser, checkAuth, userLogout } from "../controllers/user";
 
 const router: Router = Router();
 
@@ -24,5 +24,7 @@ router.post(
   passport.authenticate("local", { failureRedirect: "/login" }),
   checkAuth
 );
+
+router.get("/logout", userLogout);
 
 export default router;

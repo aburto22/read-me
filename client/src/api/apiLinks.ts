@@ -43,7 +43,7 @@ export const setReadLink = (linkId: string, bool: boolean): Promise<ILink[]> =>
 export const setLinkTags = (linkId: string, tags: string[]): Promise<ILink[]> =>
   axios({
     method: "put",
-    url: "/link-tags",
+    url: "/links",
     baseURL: "http://localhost:5000",
     data: { linkId, tags },
   }).then((res: AxiosResponse<ILink[]>) => res.data);

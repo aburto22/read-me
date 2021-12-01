@@ -28,10 +28,12 @@ export const createUser = async (
   return res.json({ userId: user._id });
 };
 
-export const checkAuth = (
-  req: Request,
-  res: Response
-): Response<IUserId | IResponseError> => {
+export const checkAuth = (req: Request, res: Response): Response<IUserId> => {
   const userId = req.user ? req.user._id : null;
   return res.json({ userId });
+};
+
+export const userLogout = (req: Request, res: Response): Response<IUserId> => {
+  req.logout();
+  return res.json({ userId: null });
 };

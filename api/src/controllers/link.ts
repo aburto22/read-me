@@ -84,12 +84,26 @@ export const deleteLink = async (
   return res.json(doc.links);
 };
 
+interface IRequestUpdateRead {
+  linkId: string;
+  bool: boolean;
+}
+
+interface IRequestUpdateTags {
+  linkId: string;
+  tags: string[];
+}
+
+type IRequestUpdateLink = IRequestUpdateRead | IRequestUpdateTags;
+
 export const updateLink = async (
   req: Request,
   res: Response
 ): Promise<Response<ILink[]>> => {
   const username = "username";
-  const { linkId, bool }: { linkId: string; bool: boolean } = req.body;
+  const data: IRequestUpdateLink = req.body;
+
+  const { linkId } = data;
 
   const doc: IDBUser | null = await User.findOne({ username }).exec();
 
@@ -99,7 +113,15 @@ export const updateLink = async (
 
   const index = doc.links.findIndex((link) => link._id.toString() === linkId);
 
-  doc.links[index].isRead = bool;
+  if ("bool" in data) {
+    const { bool } = data;
+    doc.links[index].isRead = bool;
+  }
+
+  if ("tags" in data) {
+    const { tags } = data;
+    doc.links[index].tags = tags;
+  }
 
   doc.markModified("links");
 

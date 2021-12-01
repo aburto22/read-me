@@ -38,6 +38,15 @@ export const userLogin = (
     .then(handleAxiosResponseUserId)
     .catch(handleAxiosError);
 
+export const userLogout = (): Promise<IUserId | null> =>
+  axios({
+    method: "get",
+    url: "http://localhost:5000/logout",
+    withCredentials: true,
+  })
+    .then(handleAxiosResponseUserId)
+    .catch(handleAxiosError);
+
 export const checkAuth = (): Promise<IUserId | null> =>
   axios({
     method: "get",
