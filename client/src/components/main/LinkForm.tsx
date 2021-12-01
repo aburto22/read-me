@@ -11,7 +11,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
   const [link, setLink] = useState<string>("");
   const [tags, setTags] = useState<string>("");
   const [isTagsShowing, setIsTagsShowing] = useState<boolean>(false);
-  const [error, setError] = useState<string>("I am an error");
+  const [error, setError] = useState<string>("");
 
   const handleChangeLink = (event: React.FormEvent<HTMLInputElement>): void => {
     setLink(event.currentTarget.value);

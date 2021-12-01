@@ -8,7 +8,7 @@ export const getLinks = (): Promise<ILink[] | Error> =>
     baseURL: "http://localhost:5000",
     withCredentials: true,
   })
-    .then((res: AxiosResponse<ILink[]>) => res.data)
+    .then(handleAxiosResponseLinks)
     .catch(handleAxiosError);
 
 export const addLink = (
