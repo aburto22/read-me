@@ -49,3 +49,12 @@ export const userLogout = (
   req.logout();
   return res.json({ type: "success", userId: null });
 };
+
+export const redirectToApp = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const url = "http://localhost:3000/";
+  res.redirect(url);
+};

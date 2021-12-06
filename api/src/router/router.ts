@@ -2,7 +2,12 @@ import { Router } from "express";
 import passport from "passport";
 import { getIndex } from "../controllers/index";
 import { addLink, getLinks, deleteLink, updateLink } from "../controllers/link";
-import { createUser, checkAuth, userLogout } from "../controllers/user";
+import {
+  createUser,
+  checkAuth,
+  userLogout,
+  redirectToApp,
+} from "../controllers/user";
 
 const router: Router = Router();
 
@@ -20,6 +25,19 @@ router.post(
   "/login",
   passport.authenticate("local", { failureRedirect: "/login" }),
   checkAuth
+);
+
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google"),
+  redirectToApp
 );
 
 router.get("/logout", userLogout);

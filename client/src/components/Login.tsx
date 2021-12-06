@@ -69,6 +69,24 @@ const Login = (): JSX.Element => {
           </button>
         </form>
         <div className="border-b border-gray-200 mb-6 mx-4" />
+        <div className="mb-6">
+          <p className="text-center mb-2">Alternatively, you can use: </p>
+          <ul className="flex justify-center">
+            <li className="mr-2 hover:bg-white">
+              <a
+                href="http://localhost:5000/auth/google"
+                title="Login with Google"
+              >
+                <img
+                  src="/icons/google.png"
+                  alt="Google icon"
+                  className="h-14 p-2"
+                />
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="border-b border-gray-200 mb-6 mx-4" />
         <div>
           <p className="text-center">If you don&apos;t have an account,</p>
           <Link

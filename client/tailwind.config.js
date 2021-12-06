@@ -7,6 +7,7 @@ module.exports = {
         gray: {
           "primary": "#242424",
           "dark": "#1B1B1B",
+          "hover": "#404040",
         },
         blue: {
           "image": "#194bff",

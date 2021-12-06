@@ -1,8 +1,4 @@
-import express, {
-  Express,
-  json,
-  urlencoded,
-} from "express";
+import express, { Express, json, urlencoded } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
