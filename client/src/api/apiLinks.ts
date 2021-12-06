@@ -4,8 +4,8 @@ import { handleAxiosError, handleAxiosResponseLinks } from "../helpers/axios";
 export const getLinks = (): Promise<ILink[] | Error> =>
   axios({
     method: "get",
-    url: "/links",
-    baseURL: "http://localhost:5000",
+    url: "/api/links",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     withCredentials: true,
   })
     .then(handleAxiosResponseLinks)
@@ -17,8 +17,8 @@ export const addLink = (
 ): Promise<ILink[] | Error> =>
   axios({
     method: "post",
-    url: "/links",
-    baseURL: "http://localhost:5000",
+    url: "/api/links",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     data: { link, tags },
     withCredentials: true,
   })
@@ -28,8 +28,8 @@ export const addLink = (
 export const deleteLink = (linkId: string): Promise<ILink[] | Error> =>
   axios({
     method: "delete",
-    url: "/links",
-    baseURL: "http://localhost:5000",
+    url: "/api/links",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     data: { linkId },
     withCredentials: true,
   })
@@ -42,8 +42,8 @@ export const setReadLink = (
 ): Promise<ILink[] | Error> =>
   axios({
     method: "put",
-    url: "/links",
-    baseURL: "http://localhost:5000",
+    url: "/api/links",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     data: { linkId, bool },
     withCredentials: true,
   })
@@ -56,8 +56,8 @@ export const setLinkTags = (
 ): Promise<ILink[] | Error> =>
   axios({
     method: "put",
-    url: "/links",
-    baseURL: "http://localhost:5000",
+    url: "/api/links",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     data: { linkId, tags },
     withCredentials: true,
   })

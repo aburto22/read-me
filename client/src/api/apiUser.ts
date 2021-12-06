@@ -7,7 +7,8 @@ export const createUser = (
 ): Promise<IUserId | Error> =>
   axios({
     method: "post",
-    url: "http://localhost:5000/register",
+    url: "/api/register",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     data: { username, password },
     withCredentials: true,
   })
@@ -20,7 +21,8 @@ export const userLogin = (
 ): Promise<IUserId | Error> =>
   axios({
     method: "post",
-    url: "http://localhost:5000/login",
+    url: "/api/login",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     data: { username, password },
     withCredentials: true,
   })
@@ -30,7 +32,8 @@ export const userLogin = (
 export const userLogout = (): Promise<IUserId | Error> =>
   axios({
     method: "get",
-    url: "http://localhost:5000/logout",
+    url: "/api/logout",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     withCredentials: true,
   })
     .then(handleAxiosResponseUser)
@@ -39,7 +42,8 @@ export const userLogout = (): Promise<IUserId | Error> =>
 export const checkAuth = (): Promise<IUserId | Error> =>
   axios({
     method: "get",
-    url: "http://localhost:5000/login",
+    url: "/api/login",
+    baseURL: process.env.REACT_APP_SERVER_URL,
     withCredentials: true,
   })
     .then(handleAxiosResponseUser)

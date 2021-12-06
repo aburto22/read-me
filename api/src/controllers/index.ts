@@ -1,5 +1,14 @@
 import { Request, Response, NextFunction } from "express";
+import path from "path";
 
 export const getIndex = (req: Request, res: Response, next: NextFunction) => {
-  res.json({ title: "index", message: "I am the index" });
+  const clientPath = path.join(
+    __dirname,
+    "../../../",
+    "client",
+    "build",
+    "index.html"
+  );
+
+  res.sendFile(clientPath);
 };

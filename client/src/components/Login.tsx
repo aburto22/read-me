@@ -74,7 +74,7 @@ const Login = (): JSX.Element => {
           <ul className="flex justify-center">
             <li className="mr-2 hover:bg-white">
               <a
-                href="http://localhost:5000/auth/google"
+                href={`${process.env.REACT_APP_SERVER_URL}/api/auth/google`}
                 title="Login with Google"
               >
                 <img
@@ -86,7 +86,7 @@ const Login = (): JSX.Element => {
             </li>
             <li className="mr-2 hover:bg-white">
               <a
-                href="https://localhost:5000/auth/facebook"
+                href={`${process.env.REACT_APP_SERVER_URL}/api/auth/facebook`}
                 title="Login with Facebook"
               >
                 <img

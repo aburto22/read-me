@@ -13,39 +13,41 @@ const router: Router = Router();
 
 router.get("/", getIndex);
 
-router.get("/links", getLinks);
-router.post("/links", addLink);
-router.delete("/links", deleteLink);
-router.put("/links", updateLink);
+router.get("/api/links", getLinks);
+router.post("/api/links", addLink);
+router.delete("/api/links", deleteLink);
+router.put("/api/links", updateLink);
 
-router.post("/register", createUser);
+router.post("/api/register", createUser);
 
-router.get("/login", checkAuth);
+router.get("/api/login", checkAuth);
 router.post(
-  "/login",
+  "/api/login",
   passport.authenticate("local", { failureRedirect: "/login" }),
   checkAuth
 );
 
 router.get(
-  "/auth/google",
+  "/api/auth/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
   })
 );
 router.get(
-  "/auth/google/callback",
+  "/api/auth/google/callback",
   passport.authenticate("google"),
   redirectToApp
 );
 
-router.get("/auth/facebook", passport.authenticate("facebook"));
+router.get("/api/auth/facebook", passport.authenticate("facebook"));
 router.get(
-  "/auth/facebook/callback",
+  "/api/auth/facebook/callback",
   passport.authenticate("facebook"),
   redirectToApp
 );
 
-router.get("/logout", userLogout);
+router.get("/api/logout", userLogout);
+
+router.use(getIndex);
 
 export default router;

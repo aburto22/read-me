@@ -1,4 +1,5 @@
 import express, { Express, json, urlencoded } from "express";
+import path from "path";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -12,13 +13,22 @@ import "./helpers/auth";
 const app: Express = express();
 dotenv.config();
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    optionsSuccessStatus: 200,
-    credentials: true,
-  })
-);
+const buildFolder = path.join(__dirname, "../../", "client", "build");
+
+app.use(express.static(buildFolder));
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      optionsSuccessStatus: 200,
+      credentials: true,
+    })
+  );
+} else {
+  app.use(cors());
+}
+
 app.use(json());
 app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
