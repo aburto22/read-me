@@ -80,7 +80,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
             value={tags}
             className="p-1 border border-gray-500 rounded w-full text-gray-primary text-sm"
           />
-          <p className="text-xs">
+          <p className="text-xs text-gray-300">
             Separate each tag by a comma. Tags cannot contain special
             characters.
           </p>
