@@ -17,7 +17,9 @@ passport.use(
       const user: IDBUser | null = await User.findOne({ username }).exec();
 
       if (!user) {
-        return done(null, false, { message: "Incorrect username." });
+        const err: IServerError = new Error("Username not found.");
+        err.status = 401;
+        return done(err);
       }
 
       const isPasswordValid = await bcrypt.compare(
@@ -26,7 +28,9 @@ passport.use(
       );
 
       if (!isPasswordValid) {
-        return done(null, false, { message: "Incorrect password." });
+        const err: IServerError = new Error("Incorrect password.");
+        err.status = 401;
+        return done(err);
       }
 
       return done(null, user);
