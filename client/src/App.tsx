@@ -10,8 +10,7 @@ const Main = React.lazy(() => import("./components/Main"));
 const Login = React.lazy(() => import("./components/Login"));
 const Register = React.lazy(() => import("./components/Register"));
 
-// TODO: Handle errors when loggin in and register.
-// TODO: Improve return object from api for users.
+// TODO: Error for existing username not registering correctly.
 
 const App = (): JSX.Element => {
   const [userId, setUserId] = useState<string>("");

@@ -2,6 +2,18 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/User";
 import { getSiteInfo, validateLink, appendHTTPS } from "../helpers/website";
 
+interface IRequestUpdateRead {
+  linkId: string;
+  bool: boolean;
+}
+
+interface IRequestUpdateTags {
+  linkId: string;
+  tags: string[];
+}
+
+type IRequestUpdateLink = IRequestUpdateRead | IRequestUpdateTags;
+
 export const getLinks = async (
   req: Request,
   res: Response,
@@ -9,8 +21,9 @@ export const getLinks = async (
 ): Promise<Response<IResponseLinks> | void> => {
   try {
     if (!req.user) {
-      const message = "User is not logged-in.";
-      throw new Error(message);
+      const err: IServerError = new Error("User is not logged-in.");
+      err.status = 401;
+      throw err;
     }
 
     const userId = req.user._id;
@@ -18,8 +31,9 @@ export const getLinks = async (
     const doc: IDBUser | null = await User.findById(userId).exec();
 
     if (!doc) {
-      const message = "User not found.";
-      throw new Error(message);
+      const err: IServerError = new Error("User not found.");
+      err.status = 404;
+      throw err;
     }
 
     return res.json({ type: "success", links: doc.links });
@@ -35,8 +49,9 @@ export const addLink = async (
 ): Promise<Response<IResponseLinks> | void> => {
   try {
     if (!req.user) {
-      const message = "User is not logged-in.";
-      throw new Error(message);
+      const err: IServerError = new Error("User is not logged-in.");
+      err.status = 401;
+      throw err;
     }
 
     const userId = req.user._id;
@@ -46,8 +61,9 @@ export const addLink = async (
     const httpsLink = appendHTTPS(link);
 
     if (!validateLink(httpsLink)) {
-      const message = "Link is invalid.";
-      throw new Error(message);
+      const err: IServerError = new Error("Link is invalid.");
+      err.status = 400;
+      throw err;
     }
 
     const siteInfo = await getSiteInfo(httpsLink);
@@ -74,8 +90,9 @@ export const addLink = async (
     const doc: IDBUser | null = await User.findById(userId).exec();
 
     if (!doc) {
-      const message = "User not found.";
-      throw new Error(message);
+      const err: IServerError = new Error("User not found.");
+      err.status = 404;
+      throw err;
     }
 
     doc.links = [newLink as IDBLink, ...doc.links];
@@ -95,8 +112,9 @@ export const deleteLink = async (
 ): Promise<Response<IResponseLinks> | void> => {
   try {
     if (!req.user) {
-      const message = "User is not logged-in.";
-      throw new Error(message);
+      const err: IServerError = new Error("User is not logged-in.");
+      err.status = 401;
+      throw err;
     }
 
     const userId = req.user._id;
@@ -105,8 +123,9 @@ export const deleteLink = async (
     const doc: IDBUser | null = await User.findById(userId).exec();
 
     if (!doc) {
-      const message = "User not found.";
-      throw new Error(message);
+      const err: IServerError = new Error("User not found.");
+      err.status = 404;
+      throw err;
     }
 
     doc.links = doc.links.filter((link) => link._id.toString() !== linkId);
@@ -119,18 +138,6 @@ export const deleteLink = async (
   }
 };
 
-interface IRequestUpdateRead {
-  linkId: string;
-  bool: boolean;
-}
-
-interface IRequestUpdateTags {
-  linkId: string;
-  tags: string[];
-}
-
-type IRequestUpdateLink = IRequestUpdateRead | IRequestUpdateTags;
-
 export const updateLink = async (
   req: Request,
   res: Response,
@@ -138,8 +145,9 @@ export const updateLink = async (
 ): Promise<Response<IResponseLinks> | void> => {
   try {
     if (!req.user) {
-      const message = "User is not logged-in.";
-      throw new Error(message);
+      const err: IServerError = new Error("User is not logged-in.");
+      err.status = 401;
+      throw err;
     }
 
     const userId = req.user._id;
@@ -151,8 +159,9 @@ export const updateLink = async (
     const doc: IDBUser | null = await User.findById(userId).exec();
 
     if (!doc) {
-      const message = "User not found.";
-      throw new Error(message);
+      const err: IServerError = new Error("User not found.");
+      err.status = 404;
+      throw err;
     }
 
     const index = doc.links.findIndex((link) => link._id.toString() === linkId);

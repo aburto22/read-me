@@ -12,6 +12,10 @@ const Register = (): JSX.Element => {
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
+    if (verification !== password) {
+      setErrorMessage("Passwords don't match.");
+    }
+
     if (
       username.length > 5 &&
       password.length > 5 &&
@@ -24,6 +28,7 @@ const Register = (): JSX.Element => {
         setUsername("");
         setPassword("");
         setVerification("");
+        setErrorMessage("");
         navigate("/");
       }
     }

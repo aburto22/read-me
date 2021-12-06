@@ -1,8 +1,16 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 
-export const handleAxiosError = (err: Error): Error => {
-  console.error(err);
-  const message = err.message || "There was an error with your request.";
+export const handleAxiosError = (err: AxiosError<IApiError> | Error): Error => {
+  let message;
+
+  if (axios.isAxiosError(err) && err.response) {
+    message = err.response.data.message;
+  } else {
+    message = err.message || "There was an error with your request.";
+  }
+
+  console.error("Error: ", message);
+
   return new Error(message);
 };
 

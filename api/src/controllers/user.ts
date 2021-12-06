@@ -13,8 +13,9 @@ export const createUser = async (
     const doc: IDBUser | null = await User.findOne({ username }).exec();
 
     if (doc) {
-      const message = "Username already exists.";
-      throw new Error(message);
+      const err: IServerError = new Error("Username already exists.");
+      err.status = 409;
+      throw err;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

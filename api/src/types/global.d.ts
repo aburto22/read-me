@@ -7,6 +7,11 @@ declare global {
       _id?: string;
     }
   }
+
+  interface IServerError extends Error {
+    status?: number;
+  }
+
   interface IResponseError {
     type: "error";
     message: string;
