@@ -1,11 +1,34 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { Strategy as FacebookStrategy } from "passport-facebook";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import User from "../models/User";
 
 dotenv.config();
+
+const loginWithOauth = async (username: string) => {
+  let user: IDBUser | null = await User.findOne({ username }).exec();
+
+  if (!user) {
+    const newUser = new User({
+      username,
+      hashedPassword: "oauth2",
+      links: [],
+    });
+
+    user = await newUser.save();
+
+    if (!user) {
+      const err: IServerError = new Error("Error creating a new user.");
+      err.status = 500;
+      throw err;
+    }
+  }
+
+  return user;
+};
 
 passport.serializeUser((user, done) => {
   done(null, user._id);
@@ -55,23 +78,34 @@ passport.use(
       try {
         const username = profile.displayName.split(" ")[0];
 
-        let user: IDBUser | null = await User.findOne({ username }).exec();
+        const user = await loginWithOauth(username);
 
-        if (!user) {
-          const newUser = new User({
-            username,
-            hashedPassword: "oauth2",
-            links: [],
-          });
-
-          user = await newUser.save();
-
-          if (!user) {
-            const err: IServerError = new Error("Error creating a new user.");
-            err.status = 500;
-            throw err;
-          }
+        return done(null, user);
+      } catch (err) {
+        if (err instanceof Error) {
+          return done(err);
         }
+        return done(new Error("There was an error with OAuth2 request."));
+      }
+    }
+  )
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_APP_ID || "an ID",
+      clientSecret: process.env.FACEBOOK_APP_SECRET || "a secret",
+      callbackURL: "http://localhost:5000/auth/facebook/callback",
+      profileFields: ["id", "displayName", "email"],
+    },
+    async (accessToken, refreshToken, profile, done): Promise<void> => {
+      try {
+        console.log("profile: ", profile);
+
+        const username = "testing";
+
+        const user = await loginWithOauth(username);
 
         return done(null, user);
       } catch (err) {

@@ -33,10 +33,16 @@ router.get(
     scope: ["profile", "email"],
   })
 );
-
 router.get(
   "/auth/google/callback",
   passport.authenticate("google"),
+  redirectToApp
+);
+
+router.get("/auth/facebook", passport.authenticate("facebook"));
+router.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook"),
   redirectToApp
 );
 

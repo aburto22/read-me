@@ -28,6 +28,7 @@
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.15",
     "passport": "^0.5.0",
+    "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "supertest": "^6.1.6"
@@ -38,6 +39,7 @@
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.9",
+    "@types/passport-facebook": "^2.1.11",
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.3.1",

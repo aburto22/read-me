@@ -84,6 +84,18 @@ const Login = (): JSX.Element => {
                 />
               </a>
             </li>
+            <li className="mr-2 hover:bg-white">
+              <a
+                href="https://localhost:5000/auth/facebook"
+                title="Login with Facebook"
+              >
+                <img
+                  src="/icons/facebook.png"
+                  alt="Facebook icon"
+                  className="h-14 p-2"
+                />
+              </a>
+            </li>
           </ul>
         </div>
         <div className="border-b border-gray-200 mb-6 mx-4" />
