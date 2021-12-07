@@ -50,8 +50,8 @@ const Navbar = (): JSX.Element => {
   };
 
   return (
-    <header className="h-navbar w-full bg-gray-dark border-b border-gray-500 lg:fixed z-40">
-      <nav className="mx-auto max-w-screen-lg h-full relative">
+    <header className="h-navbar w-full bg-gray-dark border-b border-gray-500 lg:fixed z-40 relative">
+      <nav className="mx-auto max-w-screen-lg h-full">
         <ul className="flex items-center h-full px-2 sm:px-4">
           <li>
             <Link
@@ -73,10 +73,10 @@ const Navbar = (): JSX.Element => {
           </li>
           <li className="sm:ml-auto">
             <ul
-              className={`${
-                isNavShowing ? "flex" : "hidden"
-              } fixed min-h-screen right-0 top-0 w-full z-50 bg-gray-dark flex-col items-center justify-center 
-              sm:flex sm:flex-row sm:w-auto sm:static sm:min-h-0`}
+              className={`flex transform transition-transform ${
+                !isNavShowing && "translate-x-full"
+              } fixed min-h-screen left-0 top-0 w-full z-50 bg-gray-dark flex-col items-center justify-center 
+              sm:flex-row sm:w-auto sm:static sm:min-h-0 sm:transform-none`}
             >
               <li>
                 <button
