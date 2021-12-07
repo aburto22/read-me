@@ -4,6 +4,7 @@ declare global {
   namespace Express {
     interface User {
       username: string;
+      email: string;
       _id?: string;
     }
   }
@@ -51,6 +52,7 @@ declare global {
 
   interface IDBUser extends Document {
     username: string;
+    email: string;
     hashedPassword: string;
     links: Array<IDBLink>;
   }

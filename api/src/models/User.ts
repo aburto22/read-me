@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new Schema<IDBUser>({
   username: { type: String, required: true },
+  email: { type: String, required: true },
   hashedPassword: { type: String, required: true },
   links: [
     {

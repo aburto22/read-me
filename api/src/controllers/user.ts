@@ -8,12 +8,12 @@ export const createUser = async (
   next: NextFunction
 ): Promise<Response<IResponseUserId> | void> => {
   try {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
 
-    const doc: IDBUser | null = await User.findOne({ username }).exec();
+    const doc: IDBUser | null = await User.findOne({ email }).exec();
 
     if (doc) {
-      const err: IServerError = new Error("Username already exists.");
+      const err: IServerError = new Error("Email already registered.");
       err.status = 409;
       throw err;
     }
@@ -22,6 +22,7 @@ export const createUser = async (
 
     const newUser = new User({
       username,
+      email,
       hashedPassword,
       links: [],
     });
@@ -50,11 +51,7 @@ export const userLogout = (
   return res.json({ type: "success", userId: null });
 };
 
-export const redirectToApp = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const redirectToApp = (req: Request, res: Response) => {
   const url = "http://localhost:3000/";
   res.redirect(url);
 };

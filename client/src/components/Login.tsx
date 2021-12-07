@@ -4,29 +4,29 @@ import { userLogin } from "../api/apiUser";
 import UserContext from "../context/UserContext";
 
 const Login = (): JSX.Element => {
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { setUserId } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const formValid = /\S+@\S+.[A-Za-z]+/.test(email) && password.length > 5;
+
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
-    if (username.length > 5 && password.length > 5) {
-      const data = await userLogin(username, password);
+    if (formValid) {
+      const data = await userLogin(email, password);
       if (data === null || data instanceof Error) {
-        setErrorMessage(data ? data.message : "Wrong username or password");
+        setErrorMessage(data ? data.message : "Wrong email or password");
       } else {
-        setUsername("");
+        setEmail("");
         setPassword("");
         setUserId(data);
         navigate("/");
       }
     }
   };
-
-  const btnActive = username.length > 5 && password.length > 5;
 
   return (
     <div className="lg:pt-navbar max-w-screen-sm mx-auto min-h-screen-navbar flex flex-col justify-around items-center">
@@ -36,13 +36,13 @@ const Login = (): JSX.Element => {
           <p className="text-xs text-red-500 mb-2 text-center">
             {errorMessage}
           </p>
-          <label htmlFor="username" className="flex flex-col mb-4 mt-2">
-            <span className="text-sm mb-1">username:</span>
+          <label htmlFor="email" className="flex flex-col mb-4 mt-2">
+            <span className="text-sm mb-1">email:</span>
             <input
-              type="text"
-              name="username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              type="email"
+              name="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               className="text-gray-dark py-1 px-2 rounded"
             />
           </label>
@@ -60,10 +60,10 @@ const Login = (): JSX.Element => {
           <button
             type="submit"
             className={`px-4 py-2 border rounded border-gray-500 bg-gray-dark text-white block mx-auto ${
-              !btnActive && "opacity-50 cursor-default"
+              !formValid && "opacity-50 cursor-default"
             }`}
             onClick={handleSubmit}
-            disabled={!btnActive}
+            disabled={!formValid}
           >
             Login
           </button>

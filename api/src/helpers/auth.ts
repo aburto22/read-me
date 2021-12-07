@@ -8,12 +8,15 @@ import User from "../models/User";
 
 dotenv.config();
 
-const loginWithOauth = async (username: string) => {
-  let user: IDBUser | null = await User.findOne({ username }).exec();
+const loginWithOauth = async (username: string, email: string) => {
+  let user: IDBUser | null = await User.findOne({
+    email,
+  }).exec();
 
   if (!user) {
     const newUser = new User({
       username,
+      email,
       hashedPassword: "oauth2",
       links: [],
     });
@@ -39,32 +42,41 @@ passport.deserializeUser(async (userId, done) => {
 });
 
 passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user: IDBUser | null = await User.findOne({ username }).exec();
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+    },
+    async (email, password, done) => {
+      try {
+        const user: IDBUser | null = await User.findOne({
+          email,
+          hashedPassword: { $ne: "oauth2" },
+        }).exec();
 
-      if (!user) {
-        const err: IServerError = new Error("Username not found.");
-        err.status = 401;
+        if (!user) {
+          const err: IServerError = new Error("Email not registered.");
+          err.status = 401;
+          return done(err);
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          password,
+          user.hashedPassword
+        );
+
+        if (!isPasswordValid) {
+          const err: IServerError = new Error("Incorrect password.");
+          err.status = 401;
+          return done(err);
+        }
+
+        return done(null, user);
+      } catch (err) {
         return done(err);
       }
-
-      const isPasswordValid = await bcrypt.compare(
-        password,
-        user.hashedPassword
-      );
-
-      if (!isPasswordValid) {
-        const err: IServerError = new Error("Incorrect password.");
-        err.status = 401;
-        return done(err);
-      }
-
-      return done(null, user);
-    } catch (err) {
-      return done(err);
     }
-  })
+  )
 );
 
 passport.use(
@@ -77,8 +89,11 @@ passport.use(
     async (accessToken, refreshToken, profile, done): Promise<void> => {
       try {
         const username = profile.displayName.split(" ")[0];
+        const email = profile.emails
+          ? profile.emails[0].value
+          : `${username}@google.com`;
 
-        const user = await loginWithOauth(username);
+        const user = await loginWithOauth(username, email);
 
         return done(null, user);
       } catch (err) {
@@ -105,7 +120,7 @@ passport.use(
 
         const username = "testing";
 
-        const user = await loginWithOauth(username);
+        const user = await loginWithOauth(username, "test@email.com");
 
         return done(null, user);
       } catch (err) {

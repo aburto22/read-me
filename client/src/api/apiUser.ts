@@ -7,27 +7,28 @@ import {
 
 export const createUser = (
   username: string,
+  email: string,
   password: string
 ): Promise<IUserId | Error> =>
   axios({
     method: "post",
     url: "/api/register",
     baseURL: process.env.REACT_APP_SERVER_URL,
-    data: { username, password },
+    data: { username, email, password },
     withCredentials: true,
   })
     .then(handleAxiosResponseUserId)
     .catch(handleAxiosError);
 
 export const userLogin = (
-  username: string,
+  email: string,
   password: string
 ): Promise<IUserId | Error> =>
   axios({
     method: "post",
     url: "/api/login",
     baseURL: process.env.REACT_APP_SERVER_URL,
-    data: { username, password },
+    data: { email, password },
     withCredentials: true,
   })
     .then(handleAxiosResponseUserId)
