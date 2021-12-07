@@ -18,9 +18,16 @@ declare interface IApiUserId {
   userId: string | null;
 }
 
+declare interface IApiUsername {
+  type: "success";
+  username: string;
+}
+
 declare interface IApiLinks {
   type: "success";
   links: ILink[];
 }
 
 declare type IUserId = string | null;
+
+declare type IUsername = string;

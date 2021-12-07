@@ -7,6 +7,7 @@ import {
   checkAuth,
   userLogout,
   redirectToApp,
+  getUsername,
 } from "../controllers/user";
 
 const router: Router = Router();
@@ -17,6 +18,8 @@ router.get("/api/links", getLinks);
 router.post("/api/links", addLink);
 router.delete("/api/links", deleteLink);
 router.put("/api/links", updateLink);
+
+router.get("/api/username", getUsername);
 
 router.post("/api/register", createUser);
 

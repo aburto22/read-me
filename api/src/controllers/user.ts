@@ -58,3 +58,23 @@ export const redirectToApp = (
   const url = "http://localhost:3000/";
   res.redirect(url);
 };
+
+export const getUsername = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { user } = req;
+
+    if (!user) {
+      const err: IServerError = new Error("User is not logged in.");
+      err.status = 403;
+      throw err;
+    }
+
+    return res.json({ type: "success", username: user.username });
+  } catch (err) {
+    return next(err);
+  }
+};

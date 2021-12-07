@@ -25,7 +25,7 @@ export const handleAxiosResponseLinks = (
   return data.links;
 };
 
-export const handleAxiosResponseUser = (
+export const handleAxiosResponseUserId = (
   res: AxiosResponse<IApiUserId | IApiError>
 ): IUserId | Error => {
   const { data } = res;
@@ -34,4 +34,15 @@ export const handleAxiosResponseUser = (
     return new Error(data.message);
   }
   return data.userId;
+};
+
+export const handleAxiosResponseUsername = (
+  res: AxiosResponse<IApiUsername | IApiError>
+): IUsername | Error => {
+  const { data } = res;
+
+  if (data.type === "error") {
+    return new Error(data.message);
+  }
+  return data.username;
 };

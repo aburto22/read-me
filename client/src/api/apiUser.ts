@@ -1,5 +1,9 @@
 import axios from "axios";
-import { handleAxiosError, handleAxiosResponseUser } from "../helpers/axios";
+import {
+  handleAxiosError,
+  handleAxiosResponseUserId,
+  handleAxiosResponseUsername,
+} from "../helpers/axios";
 
 export const createUser = (
   username: string,
@@ -12,7 +16,7 @@ export const createUser = (
     data: { username, password },
     withCredentials: true,
   })
-    .then(handleAxiosResponseUser)
+    .then(handleAxiosResponseUserId)
     .catch(handleAxiosError);
 
 export const userLogin = (
@@ -26,7 +30,7 @@ export const userLogin = (
     data: { username, password },
     withCredentials: true,
   })
-    .then(handleAxiosResponseUser)
+    .then(handleAxiosResponseUserId)
     .catch(handleAxiosError);
 
 export const userLogout = (): Promise<IUserId | Error> =>
@@ -36,7 +40,7 @@ export const userLogout = (): Promise<IUserId | Error> =>
     baseURL: process.env.REACT_APP_SERVER_URL,
     withCredentials: true,
   })
-    .then(handleAxiosResponseUser)
+    .then(handleAxiosResponseUserId)
     .catch(handleAxiosError);
 
 export const checkAuth = (): Promise<IUserId | Error> =>
@@ -46,5 +50,15 @@ export const checkAuth = (): Promise<IUserId | Error> =>
     baseURL: process.env.REACT_APP_SERVER_URL,
     withCredentials: true,
   })
-    .then(handleAxiosResponseUser)
+    .then(handleAxiosResponseUserId)
+    .catch(handleAxiosError);
+
+export const getUsername = (): Promise<IUsername | Error> =>
+  axios({
+    method: "get",
+    url: "/api/username",
+    baseURL: process.env.REACT_APP_SERVER_URL,
+    withCredentials: true,
+  })
+    .then(handleAxiosResponseUsername)
     .catch(handleAxiosError);
