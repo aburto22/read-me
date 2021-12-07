@@ -18,8 +18,13 @@ const Navbar = (): JSX.Element => {
       <nav className="mx-auto max-w-screen-lg h-full">
         <ul className="flex items-center h-full px-4">
           <li>
-            <Link className="text-xl px-2 py-1" to="/">
-              Read Me
+            <Link className="text-xl px-2 py-1 flex items-center" to="/">
+              <img
+                src="/favicon-32x32.png"
+                alt="Read me icon"
+                className="h-6 mr-2 mt-1"
+              />
+              Read-Me
             </Link>
           </li>
           <li className="ml-auto">
