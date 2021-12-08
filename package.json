@@ -2,7 +2,7 @@
   "name": "read-me",
   "version": "1.0.0",
   "description": "Easy storage and management of your read list.",
-  "engine": {
+  "engines": {
     "node": "16.x"
   },
   "main": "index.js",
