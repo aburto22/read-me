@@ -13,8 +13,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "postcss": "^7.0.39",
-    "prettier": "^2.4.1"
+    "postcss": "^7.0.39"
   },
   "dependencies": {
     "@craco/craco": "^6.4.0",
@@ -35,7 +34,8 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
     "react-scripts": "4.0.3",
     "eslint-config-airbnb": "^19.0.0",
-    "eslint-config-airbnb-typescript": "^15.0.0"
+    "eslint-config-airbnb-typescript": "^15.0.0",
+    "prettier": "^2.4.1"
   },
   "scripts": {
     "start": "BROWSER='google-chrome-canary' craco start",
