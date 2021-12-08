@@ -41,7 +41,7 @@ const Register = (): JSX.Element => {
   };
 
   return (
-    <div className="lg:pt-navbar max-w-screen-sm mx-auto min-h-screen-navbar flex flex-col justify-around items-center">
+    <div className="xl:pt-navbar max-w-screen-sm mx-auto min-h-screen-navbar flex flex-col justify-around items-center">
       <div className="max-w-xs px-6 py-8 bg-gray-dark w-full">
         <form className="mb-6">
           <h1 className="text-xl text-center mb-4">Sign Up</h1>

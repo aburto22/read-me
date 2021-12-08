@@ -93,9 +93,9 @@ const Main = (): JSX.Element => {
     .map((val) => <ReadingSkeleton key={val + Math.random()} />);
 
   return (
-    <main className="flex flex-col items-start justify-center lg:flex-row px-2 w-full">
-      <div className="flex items-center mt-8 max-w-sm w-full mx-auto lg:mr-12 lg:ml-0 relative lg:h-screen-navbar lg:mt-navbar">
-        <div className="lg:fixed w-full max-w-sm lg:min-h-form-link">
+    <main className="flex flex-col items-start justify-center xl:flex-row px-2 w-full">
+      <div className="flex items-center mt-8 max-w-sm w-full mx-auto xl:mr-12 xl:ml-0 relative xl:h-screen-navbar xl:mt-navbar">
+        <div className="xl:fixed w-full max-w-sm xl:min-h-form-link">
           <h1 className="text-2xl mb-6 text-center">Read Me</h1>
           <LinkForm setLinks={setLinks} />
           <Filters show={show} setShow={setShow} />
@@ -108,7 +108,7 @@ const Main = (): JSX.Element => {
           )}
         </div>
       </div>
-      <div className="flex flex-col items-center lg:min-h-screen-navbar lg:justify-center w-full pb-8 pt-4 lg:py-8 mx-auto lg:mx-0 max-w-md lg:mt-navbar">
+      <div className="flex flex-col items-center xl:min-h-screen-navbar xl:justify-center w-full pb-8 pt-4 xl:py-8 mx-auto xl:mx-0 max-w-md xl:mt-navbar">
         {isLoading ? (
           <ul className="max-w-full">{LoadingContent}</ul>
         ) : (

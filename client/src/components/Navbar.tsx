@@ -50,7 +50,7 @@ const Navbar = (): JSX.Element => {
   };
 
   return (
-    <header className="h-navbar w-full bg-gray-dark border-b border-gray-500 lg:fixed z-40 relative">
+    <header className="h-navbar w-full bg-gray-dark border-b border-gray-500 xl:fixed z-40 relative">
       <nav className="mx-auto max-w-screen-lg h-full">
         <ul className="flex items-center h-full px-2 sm:px-4">
           <li>

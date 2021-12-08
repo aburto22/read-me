@@ -5,6 +5,7 @@ import { checkAuth } from "./api/apiUser";
 import UserContext from "./context/UserContext";
 import RequireAuth from "./components/common/RequireAuth";
 import OnlyNonAuth from "./components/common/OnlyNonAuth";
+import Loading from "./components/Loading";
 
 const Main = React.lazy(() => import("./components/Main"));
 const Login = React.lazy(() => import("./components/Login"));
@@ -31,8 +32,8 @@ const App = (): JSX.Element => {
   return (
     <UserContext.Provider value={UserContextValue}>
       <div className="bg-gray-primary text-white min-h-screen">
-        <Suspense fallback={<div>Loading...</div>}>
-          <Navbar />
+        <Navbar />
+        <Suspense fallback={<Loading />}>
           <Routes>
             <Route
               path="/"
