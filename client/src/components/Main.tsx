@@ -96,7 +96,7 @@ const Main = (): JSX.Element => {
     <main className="flex flex-col items-start justify-center xl:flex-row px-2 w-full">
       <div className="flex items-center mt-8 max-w-sm w-full mx-auto xl:mr-12 xl:ml-0 relative xl:h-screen-navbar xl:mt-navbar">
         <div className="xl:fixed w-full max-w-sm xl:min-h-form-link">
-          <h1 className="text-2xl mb-6 text-center">Read Me</h1>
+          <h1 className="text-2xl mb-6 text-center">Read My List</h1>
           <LinkForm setLinks={setLinks} />
           <Filters show={show} setShow={setShow} />
           <Sort sort={sort} setSort={setSort} />

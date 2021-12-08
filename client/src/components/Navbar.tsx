@@ -60,10 +60,10 @@ const Navbar = (): JSX.Element => {
             >
               <img
                 src="/favicon-32x32.png"
-                alt="Read me icon"
+                alt="Read my List icon"
                 className="h-6 mr-2 mt-1"
               />
-              Read-Me
+              Read My List
             </Link>
           </li>
           <li className="ml-auto sm:hidden">

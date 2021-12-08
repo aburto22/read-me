@@ -29,6 +29,9 @@ const Login = (): JSX.Element => {
     }
   };
 
+  // If server is deployed in a diferent port, then srever url will be a valid url.
+  const serverUrl = process.env.REACT_APP_SERVER_URL || "";
+
   return (
     <div className="xl:pt-navbar max-w-screen-sm mx-auto min-h-screen-navbar flex flex-col justify-around items-center">
       <div className="max-w-xs px-6 py-8 bg-gray-dark w-full">
@@ -75,7 +78,7 @@ const Login = (): JSX.Element => {
           <ul className="flex justify-center">
             <li className="mr-2 hover:bg-white">
               <a
-                href={`${process.env.REACT_APP_SERVER_URL}/api/auth/google`}
+                href={`${serverUrl}/api/auth/google`}
                 title="Login with Google"
               >
                 <img
@@ -87,7 +90,7 @@ const Login = (): JSX.Element => {
             </li>
             <li className="mr-2 hover:bg-white">
               <a
-                href={`${process.env.REACT_APP_SERVER_URL}/api/auth/facebook`}
+                href={`${serverUrl}/api/auth/facebook`}
                 title="Login with Facebook"
               >
                 <img
