@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 import User from "../models/User";
+
+dotenv.config();
 
 export const createUser = async (
   req: Request,
@@ -52,7 +55,8 @@ export const userLogout = (
 };
 
 export const redirectToApp = (req: Request, res: Response) => {
-  const url = "http://localhost:3000/";
+  const url =
+    process.env.NODE_ENV === "production" ? "/" : "http://localhost:3000/";
   res.redirect(url);
 };
 

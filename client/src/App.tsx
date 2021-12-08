@@ -9,6 +9,7 @@ import OnlyNonAuth from "./components/common/OnlyNonAuth";
 const Main = React.lazy(() => import("./components/Main"));
 const Login = React.lazy(() => import("./components/Login"));
 const Register = React.lazy(() => import("./components/Register"));
+const NotFound = React.lazy(() => import("./components/NotFound"));
 
 const App = (): JSX.Element => {
   const [userId, setUserId] = useState<string>("");
@@ -30,8 +31,8 @@ const App = (): JSX.Element => {
   return (
     <UserContext.Provider value={UserContextValue}>
       <div className="bg-gray-primary text-white min-h-screen">
-        <Navbar />
         <Suspense fallback={<div>Loading...</div>}>
+          <Navbar />
           <Routes>
             <Route
               path="/"
@@ -57,6 +58,7 @@ const App = (): JSX.Element => {
                 </OnlyNonAuth>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </div>

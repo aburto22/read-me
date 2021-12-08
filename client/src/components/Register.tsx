@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "../api/apiUser";
+import { validateEmail } from "../helpers/forms";
 
 const Register = (): JSX.Element => {
   const [email, setEmail] = useState<string>("");
@@ -11,7 +12,7 @@ const Register = (): JSX.Element => {
   const navigate = useNavigate();
 
   const formValid =
-    /\S+@\S.[A-Za-z]+/.test(email) &&
+    validateEmail(email) &&
     username.length > 5 &&
     password.length > 5 &&
     verification.length > 5;

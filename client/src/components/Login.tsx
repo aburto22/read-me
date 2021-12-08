@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "../api/apiUser";
 import UserContext from "../context/UserContext";
+import { validateEmail } from "../helpers/forms";
 
 const Login = (): JSX.Element => {
   const [email, setEmail] = useState<string>("");
@@ -10,7 +11,7 @@ const Login = (): JSX.Element => {
   const { setUserId } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const formValid = /\S+@\S+.[A-Za-z]+/.test(email) && password.length > 5;
+  const formValid = validateEmail(email) && password.length > 5;
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
