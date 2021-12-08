@@ -2,6 +2,9 @@
   "name": "read-me",
   "version": "1.0.0",
   "description": "Easy storage and management of your read list.",
+  "engine": {
+    "node": "16.x"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd api && npm run nodemon\" \"cd client && npm start\"",
