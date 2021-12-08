@@ -118,11 +118,12 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done): Promise<void> => {
       try {
-        console.log("profile: ", profile);
+        const username = profile.displayName.split(" ")[0];
+        const email = profile.emails
+          ? profile.emails[0].value
+          : `${username}@facebook.com`;
 
-        const username = "testing";
-
-        const user = await loginWithOauth(username, "test@email.com");
+        const user = await loginWithOauth(username, email);
 
         return done(null, user);
       } catch (err) {
