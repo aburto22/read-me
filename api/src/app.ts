@@ -6,8 +6,9 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import session from "express-session";
-import router from "./router/router";
+import apiRouter from "./router/api";
 import errorHandler from "./helpers/errorHandler";
+import { getIndex } from "./controllers/index";
 import "./helpers/auth";
 
 const app: Express = express();
@@ -54,7 +55,9 @@ mongoose.connection.on("connection", () =>
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(router);
+app.get("/", getIndex);
+app.use("/api", apiRouter);
+app.use(getIndex);
 
 app.use(errorHandler);
 
