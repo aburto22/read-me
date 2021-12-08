@@ -55,6 +55,8 @@ export const userLogout = (
 };
 
 export const redirectToApp = (req: Request, res: Response) => {
+  // In production, both client and api will be on the same domain.
+
   const url =
     process.env.NODE_ENV === "production" ? "/" : "http://localhost:3000/";
   res.redirect(url);

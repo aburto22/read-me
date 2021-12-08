@@ -8,6 +8,8 @@ import User from "../models/User";
 
 dotenv.config();
 
+const domainUrl = process.env.HEROKU_URL || "http://localhost:5000";
+
 const loginWithOauth = async (username: string, email: string) => {
   let user: IDBUser | null = await User.findOne({
     email,
@@ -84,7 +86,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID || "an ID",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "a secret",
-      callbackURL: "http://localhost:5000/api/auth/google/callback",
+      callbackURL: `${domainUrl}/api/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done): Promise<void> => {
       try {
@@ -111,7 +113,7 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID || "an ID",
       clientSecret: process.env.FACEBOOK_APP_SECRET || "a secret",
-      callbackURL: "http://localhost:5000/auth/facebook/callback",
+      callbackURL: `${domainUrl}/api/auth/facebook/callback`,
       profileFields: ["id", "displayName", "email"],
     },
     async (accessToken, refreshToken, profile, done): Promise<void> => {
