@@ -16,8 +16,7 @@
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^7.0.39",
-    "prettier": "^2.4.1",
-    "react-scripts": "4.0.3"
+    "prettier": "^2.4.1"
   },
   "dependencies": {
     "@craco/craco": "^6.4.0",
@@ -35,7 +34,8 @@
     "react-router-dom": "^6.0.2",
     "typescript": "^4.4.4",
     "web-vitals": "^1.1.2",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+    "react-scripts": "4.0.3"
   },
   "scripts": {
     "start": "BROWSER='google-chrome-canary' craco start",
