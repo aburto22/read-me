@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import path from "path";
 
-export const getIndex = (req: Request, res: Response, next: NextFunction) => {
+export const passRouteToClient = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const clientPath = path.join(
     __dirname,
     "../../../",

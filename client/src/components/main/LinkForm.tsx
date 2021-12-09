@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { addLink } from "../../api/apiLinks";
 import Svg from "../common/svg";
 import { tagsStringToArr } from "../../api/tags";
@@ -13,6 +13,20 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
   const [isTagsShowing, setIsTagsShowing] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const tagsInputRef = useRef<HTMLInputElement>(null);
+  const linkInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isTagsShowing && tagsInputRef.current) {
+      tagsInputRef.current.focus();
+    }
+  }, [isTagsShowing]);
+
+  useEffect(() => {
+    if (linkInputRef.current) {
+      linkInputRef.current.focus();
+    }
+  }, []);
 
   const handleChangeLink = (event: React.FormEvent<HTMLInputElement>): void => {
     setLink(event.currentTarget.value);
@@ -52,6 +66,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
           name="link"
           onChange={handleChangeLink}
           value={link}
+          ref={linkInputRef}
           className="p-1 border border-gray-500 rounded w-full text-gray-primary"
         />
       </label>
@@ -78,6 +93,7 @@ const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
             name="tags"
             onChange={handleChangeTags}
             value={tags}
+            ref={tagsInputRef}
             className="p-1 border border-gray-500 rounded w-full text-gray-primary text-sm"
           />
           <p className="text-xs text-gray-300">

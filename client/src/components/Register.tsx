@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "../api/apiUser";
 import { validateEmail } from "../helpers/forms";
@@ -9,7 +9,14 @@ const Register = (): JSX.Element => {
   const [password, setPassword] = useState<string>("");
   const [verification, setVerification] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const usernameInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (usernameInputRef.current) {
+      usernameInputRef.current.focus();
+    }
+  }, []);
 
   const formValid =
     validateEmail(email) &&
@@ -54,6 +61,7 @@ const Register = (): JSX.Element => {
               type="text"
               name="username"
               value={username}
+              ref={usernameInputRef}
               onChange={(event) => setUsername(event.target.value)}
               className="text-gray-dark py-1 px-2 rounded"
             />

@@ -38,7 +38,7 @@
     "@typescript-eslint/parser": "^5.3.1"
   },
   "scripts": {
-    "start": "BROWSER='google-chrome-canary' craco start",
+    "start": "BROWSER='google-chrome-canary' REACT_APP_SERVER_URL=http://localhost:5000 craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
