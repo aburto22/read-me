@@ -7,8 +7,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"cd api && npm run nodemon\" \"cd client && npm start\"",
     "start": "cd api && npm start",
+    "build": "(cd client && npm install && npm run build) && (cd api && npm install && npm run build)",
     "heroku-postbuild": "(cd client && npm install && npm run build) && (cd api && npm install && npm run build)"
   },
   "repository": {
@@ -21,8 +21,5 @@
   "bugs": {
     "url": "https://github.com/aburto22/read-my-list/issues"
   },
-  "homepage": "https://github.com/aburto22/read-my-list#readme",
-  "dependencies": {
-    "concurrently": "^6.3.0"
-  }
+  "homepage": "https://github.com/aburto22/read-my-list#readme"
 }

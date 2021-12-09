@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
-    "nodemon": "concurrently \"tsc --project tsconfig.build.json -w\" \"nodemon ./dist/server\"",
-    "start": "node ./dist/server",
+    "nodemon": "concurrently \"tsc --project tsconfig.build.json -w\" \"NODE_ENV=development nodemon ./dist/server\"",
+    "start": "NODE_ENV=production node ./dist/server",
     "test": "jest"
   },
   "keywords": [],

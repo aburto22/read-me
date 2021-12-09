@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "../api/apiUser";
 import UserContext from "../context/UserContext";
@@ -8,8 +8,15 @@ const Login = (): JSX.Element => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const emailInputRef = useRef<HTMLInputElement>(null);
   const { setUserId } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (emailInputRef.current) {
+      emailInputRef.current.focus();
+    }
+  }, []);
 
   const formValid = validateEmail(email) && password.length > 5;
 
@@ -47,6 +54,7 @@ const Login = (): JSX.Element => {
               name="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              ref={emailInputRef}
               className="text-gray-dark py-1 px-2 rounded"
             />
           </label>
