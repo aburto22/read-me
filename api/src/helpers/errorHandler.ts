@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
+import { validationResult } from "express-validator";
 
 dotenv.config();
 
@@ -7,7 +8,25 @@ const clientUrl =
   process.env.NODE_ENV === "development" ? "http://localhost:3000" : "";
 const loginRedirectUrl = `${clientUrl}/login-error`;
 
-// TODO: Check query params.
+export const checkValidatorErrors = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): NextFunction | void => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const message = errors
+      .array()
+      .map((error) => `${error.param}: ${error.msg}`)
+      .join(", ");
+    const err: IServerError = new Error(message);
+    err.status = 400;
+    throw err;
+  }
+
+  return next();
+};
 
 export const loginErrorHandler = (
   err: IServerError | Error,
