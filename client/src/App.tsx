@@ -14,9 +14,12 @@ const NotFound = React.lazy(() => import("./components/NotFound"));
 
 const App = (): JSX.Element => {
   const [userId, setUserId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     checkAuth().then((data) => {
+      setIsLoading(false);
+
       if (data instanceof Error) {
         throw data;
       }
@@ -33,35 +36,39 @@ const App = (): JSX.Element => {
     <UserContext.Provider value={UserContextValue}>
       <div className="bg-gray-primary text-white min-h-screen">
         <Navbar />
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <RequireAuth>
-                  <Main />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                <OnlyNonAuth>
-                  <Login />
-                </OnlyNonAuth>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <OnlyNonAuth>
-                  <Register />
-                </OnlyNonAuth>
-              }
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <Main />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <OnlyNonAuth>
+                    <Login />
+                  </OnlyNonAuth>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <OnlyNonAuth>
+                    <Register />
+                  </OnlyNonAuth>
+                }
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        )}
       </div>
     </UserContext.Provider>
   );
