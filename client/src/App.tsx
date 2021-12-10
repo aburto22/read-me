@@ -11,6 +11,7 @@ const Main = React.lazy(() => import("./components/Main"));
 const Login = React.lazy(() => import("./components/Login"));
 const Register = React.lazy(() => import("./components/Register"));
 const NotFound = React.lazy(() => import("./components/NotFound"));
+const LoginError = React.lazy(() => import("./components/LoginError"));
 
 const App = (): JSX.Element => {
   const [userId, setUserId] = useState<string>("");
@@ -65,6 +66,7 @@ const App = (): JSX.Element => {
                   </OnlyNonAuth>
                 }
               />
+              <Route path="oauth-login" element={<LoginError />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
