@@ -1,6 +1,22 @@
 import { Request, Response, NextFunction } from "express";
+import dotenv from "dotenv";
 
-const errorHandler = (
+dotenv.config();
+
+const clientUrl =
+  process.env.NODE_ENV === "development" ? "http://localhost:3000" : "";
+const loginRedirectUrl = `${clientUrl}/login-error`;
+
+// TODO: Check query params.
+
+export const loginErrorHandler = (
+  err: IServerError | Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => res.status(500).redirect(loginRedirectUrl);
+
+export const errorHandler = (
   err: IServerError | Error,
   req: Request,
   res: Response,
@@ -12,5 +28,3 @@ const errorHandler = (
 
   return res.status(status).json(error);
 };
-
-export default errorHandler;

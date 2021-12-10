@@ -8,7 +8,7 @@ import passport from "passport";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import apiRouter from "./router/api";
-import errorHandler from "./helpers/errorHandler";
+import { errorHandler } from "./helpers/errorHandler";
 import { passRouteToClient } from "./controllers/index";
 import "./helpers/auth";
 
@@ -22,7 +22,9 @@ const app: Express = express();
 
 // Configur CORS
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV === "production") {
+  app.use(cors());
+} else {
   app.use(
     cors({
       origin: "http://localhost:3000",
@@ -30,8 +32,6 @@ if (process.env.NODE_ENV !== "production") {
       credentials: true,
     })
   );
-} else {
-  app.use(cors());
 }
 
 // Static routes

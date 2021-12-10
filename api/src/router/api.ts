@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { addLink, getLinks, deleteLink, updateLink } from "../controllers/link";
+import { loginErrorHandler } from "../helpers/errorHandler";
 import {
   createUser,
   checkAuth,
@@ -21,11 +22,7 @@ router.get("/username", getUsername);
 router.post("/register", createUser);
 
 router.get("/login", checkAuth);
-router.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: "/login" }),
-  checkAuth
-);
+router.post("/login", passport.authenticate("local"), checkAuth);
 
 router.get(
   "/auth/google",
@@ -36,7 +33,8 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google"),
-  redirectToApp
+  redirectToApp,
+  loginErrorHandler
 );
 
 router.get(
@@ -48,7 +46,8 @@ router.get(
 router.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook"),
-  redirectToApp
+  redirectToApp,
+  loginErrorHandler
 );
 
 router.get("/logout", userLogout);
