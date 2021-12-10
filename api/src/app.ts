@@ -94,6 +94,11 @@ app.use(passport.session());
 
 app.get("/", passRouteToClient);
 app.use("/api", apiRouter);
+app.use("/google44b62d102cb3757e.html", (req, res) =>
+  res.sendFile(
+    path.join(__dirname, "..", "static", "google44b62d102cb3757e.html")
+  )
+);
 app.use(passRouteToClient);
 
 // Handle errors
