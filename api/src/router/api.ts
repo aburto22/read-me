@@ -13,13 +13,22 @@ import {
   redirectToApp,
   getUsername,
 } from "../controllers/user";
+import { sanitizeUrl, sanitizeTags } from "../helpers/sanitizers";
 
 const router: Router = Router();
 
 router.get("/links", getLinks);
-router.post("/links", addLink);
+router.post(
+  "/links",
+  [
+    check("link").customSanitizer(sanitizeUrl).isURL(),
+    check("tags").customSanitizer(sanitizeTags),
+  ],
+  checkValidatorErrors,
+  addLink
+);
 router.delete("/links", deleteLink);
-router.put("/links", updateLink);
+router.put("/links", [check("tags").customSanitizer(sanitizeTags)], updateLink);
 
 router.get("/username", getUsername);
 

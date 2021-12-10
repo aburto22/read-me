@@ -10,7 +10,7 @@ interface IReadingLinkParams {
 }
 
 const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
-  // TODO: Sanitize input as user types.
+  // TODO: Sanitaze input tags.
   const [read, setRead] = useState(link.isRead);
   const [tags, setTags] = useState(link.tags);
   const [inputTags, setInputTags] = useState(tags.join(", "));
