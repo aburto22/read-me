@@ -1,7 +1,11 @@
 import { Router } from "express";
 import passport from "passport";
+import { check } from "express-validator";
 import { addLink, getLinks, deleteLink, updateLink } from "../controllers/link";
-import { loginErrorHandler } from "../helpers/errorHandler";
+import {
+  loginErrorHandler,
+  checkValidatorErrors,
+} from "../helpers/errorHandler";
 import {
   createUser,
   checkAuth,
@@ -9,20 +13,47 @@ import {
   redirectToApp,
   getUsername,
 } from "../controllers/user";
+import { sanitizeUrl, sanitizeTags } from "../helpers/sanitizers";
 
 const router: Router = Router();
 
 router.get("/links", getLinks);
-router.post("/links", addLink);
+router.post(
+  "/links",
+  [
+    check("link").customSanitizer(sanitizeUrl).isURL(),
+    check("tags").customSanitizer(sanitizeTags),
+  ],
+  checkValidatorErrors,
+  addLink
+);
 router.delete("/links", deleteLink);
-router.put("/links", updateLink);
+router.put("/links", [check("tags").customSanitizer(sanitizeTags)], updateLink);
 
 router.get("/username", getUsername);
 
-router.post("/register", createUser);
+router.post(
+  "/register",
+  [
+    check("username").isLength({ min: 5 }).trim().escape(),
+    check("email").trim().escape().isEmail().normalizeEmail(),
+    check("password").isLength({ min: 5 }).trim().escape(),
+  ],
+  checkValidatorErrors,
+  createUser
+);
 
 router.get("/login", checkAuth);
-router.post("/login", passport.authenticate("local"), checkAuth);
+router.post(
+  "/login",
+  [
+    check("email").trim().escape().isEmail().normalizeEmail(),
+    check("password").isLength({ min: 5 }).trim().escape(),
+  ],
+  checkValidatorErrors,
+  passport.authenticate("local"),
+  checkAuth
+);
 
 router.get(
   "/auth/google",
