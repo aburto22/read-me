@@ -5,9 +5,12 @@ import {
   getTitle,
   getDescription,
   getDomain,
+  getUrl,
   validateLink,
   appendHTTPS,
   getImageSrc,
+  getIconApple,
+  getFaviconOrMaskIcon,
 } from "../src/helpers/website";
 
 describe("Check And Append HTTPS if necessary", () => {
@@ -168,6 +171,41 @@ describe("Get Domain", () => {
   });
 });
 
+describe("Get Url", () => {
+  test("Get url for a site for https://www.google.com/", () => {
+    const input = "https://www.google.com/";
+    const response = getUrl(input);
+
+    const desiredOutput = "https://www.google.com/";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test("Get url for a site for https://www.google.com/docs", () => {
+    const input = "http://www.google.com/docs";
+    const response = getUrl(input);
+
+    const desiredOutput = "https://www.google.com/docs";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test("Get url for a site for https://www.google.com/docs/index.html", () => {
+    const input = "https://www.google.com/docs/index.html";
+    const response = getUrl(input);
+
+    const desiredOutput = "https://www.google.com/docs/";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test("Get url for a site for https://www.google.com/docs/index.html", () => {
+    const input = "https://www.google.com/docs/index.html#place";
+    const response = getUrl(input);
+
+    const desiredOutput = "https://www.google.com/docs/";
+
+    expect(response).toMatch(desiredOutput);
+  });
+});
+
 describe("Get Head", () => {
   test("It sould retrieve head for a standard tag: <head> ... </head>", () => {
     const input =
@@ -201,6 +239,16 @@ describe("Get Title", () => {
   test("It sould retrieve title for a non standard tag: <title [some attributes]> ... </title>", () => {
     const input =
       '<head >\n<title data-react-helmet="true">Learn to Code — For Free — Coding Courses for Busy People</title>\n</head>';
+    const response = getTitle(input);
+
+    const desiredOutput =
+      "Learn to Code — For Free — Coding Courses for Busy People";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test("It sould retrieve title for text with line breaks: <title> \n..\n. </title>", () => {
+    const input =
+      "<head >\n<title> \nLearn to Code — \nFor Free — Coding Courses \nfor Busy People</title>\n</head>";
     const response = getTitle(input);
 
     const desiredOutput =
@@ -338,6 +386,62 @@ describe("Get Image Src", () => {
   });
 });
 
+describe("Get Apple Touch Icon Src", () => {
+  test('It should retrieve apple touch src for a standard tag: <link rel="apple-touch-icon" sizes=[size] href="[icon src]"/>', () => {
+    const input =
+      '<head>\n<link rel="apple-touch-icon" sizes="76x76" href="https://mysite.com/apple-touch-icon-ipad-76x76.png"/>\n</head>';
+    const link = "https://mysite.com/";
+    const response = getIconApple(input, link);
+
+    const desiredOutput = "https://mysite.com/apple-touch-icon-ipad-76x76.png";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It should retrieve the largest apple touch src, each tag of the format: <link rel="apple-touch-icon" sizes=[size] href="[icon src]"/>', () => {
+    const input =
+      '<head>\n<link rel="apple-touch-icon" sizes="76x76" href="https://mysite.com/apple-touch-icon-ipad-76x76.png"/><link rel="apple-touch-icon" sizes="152x152" href="https://mysite.com/apple-touch-icon-ipad-152x152.png"/><link rel="apple-touch-icon" sizes="120x120" href="https://mysite.com/apple-touch-icon-ipad-120x120.png"/>\n</head>';
+    const link = "https://mysite.com/";
+    const response = getIconApple(input, link);
+
+    const desiredOutput =
+      "https://mysite.com/apple-touch-icon-ipad-152x152.png";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It should retrieve apple touch src for a src without domain nor leading slash: <link rel="apple-touch-icon" sizes=[size] href="[icon src]"/>', () => {
+    const input =
+      '<head>\n<link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-ipad-76x76.png"/>\n</head>';
+    const link = "https://mysite.com/";
+    const response = getIconApple(input, link);
+
+    const desiredOutput = "https://mysite.com/apple-touch-icon-ipad-76x76.png";
+
+    expect(response).toMatch(desiredOutput);
+  });
+});
+
+describe("Get Favicon Src", () => {
+  test('It should retrieve favicon src for a standard tag: <link rel="shortcut icon" href="/favicon.ico">', () => {
+    const input =
+      '<head>\n<link rel="shortcut icon" href="/favicon.ico">\n</head>';
+    const link = "https://mysite.com/";
+    const response = getFaviconOrMaskIcon(input, link);
+
+    const desiredOutput = "https://mysite.com/favicon.ico";
+
+    expect(response).toMatch(desiredOutput);
+  });
+  test('It should retrieve mask icon src for a standard tag: <link rel="mask-icon" href="[icon src]">', () => {
+    const input = '<head>\n<link rel="mask-icon" href="img/icon.svg">\n</head>';
+    const link = "https://mysite.com/docs/";
+    const response = getFaviconOrMaskIcon(input, link);
+
+    const desiredOutput = "https://mysite.com/docs/img/icon.svg";
+
+    expect(response).toMatch(desiredOutput);
+  });
+});
+
 describe("Get Site Info", () => {
   test("It should retrieve link information: Google", async () => {
     const link = "https://www.google.com/";
@@ -347,7 +451,8 @@ describe("Get Site Info", () => {
       title: "Google",
       description:
         "Velkommen til Google S�k. Finn det du leter etter p� nettet p� et blunk.",
-      image: "",
+      image:
+        "https://www.google.com/logos/doodles/2021/seasonal-holidays-2021-6753651837109324-2xa.gif",
     };
 
     if (response.type === "success") {
@@ -437,7 +542,8 @@ describe("Get Site Info", () => {
     const desiredOutput = {
       title: "TypeScript: Documentation - More on Functions",
       description: "Learn about how Functions work in TypeScript.",
-      image: "",
+      image:
+        "https://www.typescriptlang.org/icons/icon-512x512.png?v=8944a05a8b601855de116c8a56d3b3ae",
     };
 
     if (response.type === "success") {
@@ -472,7 +578,8 @@ describe("Get Site Info", () => {
       title: "TypeScript: Documentation - Narrowing",
       description:
         "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
-      image: "",
+      image:
+        "https://www.typescriptlang.org/icons/icon-512x512.png?v=8944a05a8b601855de116c8a56d3b3ae",
     };
 
     if (response.type === "success") {
@@ -489,7 +596,25 @@ describe("Get Site Info", () => {
       title:
         "Average Joe Cyclist &bull; A Blog for Average People who LOVE to ride bikes!",
       description: "A Blog for Average People who LOVE to ride bikes!",
-      image: "",
+      image:
+        "https://averagejoecyclist.com/wp-content/themes/magazine-pro/images/favicon.ico",
+    };
+
+    if (response.type === "success") {
+      expect(response.data).toMatchObject(desiredOutput);
+    } else {
+      fail(response.message);
+    }
+  });
+  test("It should retrieve link information: Cloud Convert", async () => {
+    const link = "https://cloudconvert.com/png-to-webp";
+    const response = await getSiteInfo(link);
+
+    const desiredOutput = {
+      title: "PNG to WEBP | CloudConvert",
+      description:
+        ">PNG to WEBP Converter - CloudConvert is a free &amp; fast online file conversion service.",
+      image: "https://cloudconvert.com/images/logo_flat_32.png",
     };
 
     if (response.type === "success") {

@@ -101,7 +101,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
             <img
               src={link.image}
               alt="Read link cover"
-              className="object-cover rounded-l w-full h-full"
+              className="object-cover rounded-l w-full h-full bg-white"
             />
           ) : (
             <p className="text-5xl text-white">{link.name[0]}</p>
@@ -113,7 +113,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
             dangerouslySetInnerHTML={{ __html: link.name }}
           />
           <a
-            className="text-xs block overflow-ellipsis overflow-hidden whitespace-nowrap mb-1"
+            className="text-xs block overflow-ellipsis overflow-hidden whitespace-nowrap mb-1 text-gray-300"
             href={link.link}
             target="_blank"
             rel="noreferrer"
@@ -123,7 +123,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
             {!isEditingTags && <div className="absolute inset-0" />}
           </a>
           <p
-            className="text-sm break-normal max-w-xxs sm:max-w-xs line-clamp-2"
+            className="text-xs break-normal max-w-xxs sm:max-w-xs line-clamp-2"
             dangerouslySetInnerHTML={{ __html: link.description }}
           />
           <div
