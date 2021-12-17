@@ -72,7 +72,7 @@ export const validateLink = (link: string): boolean => {
 };
 
 export const getHead = (site: string): string => {
-  const regex = /<head\s*>[\s\S]*?<\/head>/;
+  const regex = /<head\s*>[\s\S]*?<\/head>/i;
 
   const match = site.match(regex);
 
@@ -86,7 +86,7 @@ export const getHead = (site: string): string => {
 export const getTitle = (site: string): string => {
   const head = getHead(site);
 
-  const titleTextRegex = /<title[^<>]*>([^<>]*)<\/title>/;
+  const titleTextRegex = /<title[^<>]*>([^<>]*)<\/title>/i;
 
   const titleTextMatch = head.match(titleTextRegex);
 
@@ -101,7 +101,7 @@ export const getDescription = (site: string): string => {
   const head = getHead(site);
 
   const regexDescriptionTag =
-    /<meta[^<>]+(?:name|property)="?(?:[A-Za-z]+:)?description"?[^\0]*?(?<!=")>/g;
+    /<meta[^<>]+(?:name|property)="?(?:[a-z]+:)?description"?[^\0]*?(?<!=")>/gi;
 
   const descriptionTagMatch = head.match(regexDescriptionTag);
 
@@ -114,7 +114,7 @@ export const getDescription = (site: string): string => {
     ""
   );
 
-  const descriptionTextRegex = /content="([^"]+?)"/;
+  const descriptionTextRegex = /content="([^"]+?)"/i;
 
   const descriptionTextMatch = longestMatch.match(descriptionTextRegex);
 
@@ -128,7 +128,7 @@ export const getDescription = (site: string): string => {
 export const getImageSrc = (site: string, link = ""): string => {
   const head = getHead(site);
 
-  const regexImageTag = /<meta[^<>]*?property="?(?:[A-Za-z]+:)?image"?[^<>]*?>/;
+  const regexImageTag = /<meta[^<>]*?property="?(?:[a-z]+:)?image"?[^<>]*?>/i;
 
   const imageTagMatch = head.match(regexImageTag);
 
@@ -138,7 +138,7 @@ export const getImageSrc = (site: string, link = ""): string => {
 
   const imageTag = imageTagMatch[0];
 
-  const regexImageSrc = /content="(.*?)"/;
+  const regexImageSrc = /content="(.*?)"/i;
 
   const imageSrcMatch = imageTag.match(regexImageSrc);
 
@@ -164,7 +164,7 @@ export const getImageSrc = (site: string, link = ""): string => {
 export const getIconApple = (site: string, link = ""): string => {
   const head = getHead(site);
 
-  const regexIconTag = /<link[^<>]*?rel="apple-touch-icon"[^<>]*?>/g;
+  const regexIconTag = /<link[^<>]*?rel="apple-touch-icon"[^<>]*?>/gi;
 
   const iconTagMatches = head.match(regexIconTag);
 
@@ -172,7 +172,7 @@ export const getIconApple = (site: string, link = ""): string => {
     return "";
   }
 
-  const regexIconSize = /sizes="(\d+)x\d+"/;
+  const regexIconSize = /sizes="(\d+)x\d+"/i;
 
   const iconTagMatchesWithSizes = iconTagMatches.map((iconTag) => {
     const sizeMatch = iconTag.match(regexIconSize);
@@ -183,9 +183,9 @@ export const getIconApple = (site: string, link = ""): string => {
     };
   });
 
-  const largestSizeIconTag = iconTagMatchesWithSizes.sort(
-    (a, b) => b.size - a.size
-  )[0].iconTag;
+  iconTagMatchesWithSizes.sort((a, b) => b.size - a.size);
+
+  const largestSizeIconTag = iconTagMatchesWithSizes[0].iconTag;
 
   const regexIconSrc = /href="(.*?)"/;
 
@@ -213,7 +213,7 @@ export const getIconApple = (site: string, link = ""): string => {
 export const getFaviconOrMaskIcon = (site: string, link = ""): string => {
   const head = getHead(site);
 
-  const regexFaviconTag = /<link[^<>]*?rel="[-A-Za-z ]*icon"?[^<>]*?>/;
+  const regexFaviconTag = /<link[^<>]*?rel="[-a-z ]*icon"?[^<>]*?>/i;
 
   const faviconTagMatch = head.match(regexFaviconTag);
 
@@ -223,7 +223,7 @@ export const getFaviconOrMaskIcon = (site: string, link = ""): string => {
 
   const faviconTag = faviconTagMatch[0];
 
-  const regexFaviconSrc = /href="(.*?)"/;
+  const regexFaviconSrc = /href="(.*?)"/i;
 
   const faviconSrcMatch = faviconTag.match(regexFaviconSrc);
 
