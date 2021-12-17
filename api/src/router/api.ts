@@ -28,7 +28,11 @@ router.post(
   addLink
 );
 router.delete("/links", deleteLink);
-router.put("/links", [check("tags").customSanitizer(sanitizeTags)], updateLink);
+router.put(
+  "/links",
+  [check("tags").if(check("tags").exists()).customSanitizer(sanitizeTags)],
+  updateLink
+);
 
 router.get("/username", getUsername);
 
