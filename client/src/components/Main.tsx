@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { LinksContext } from "../context/LinksContext";
+import { getTagsFromActiveLinks, isLinkTagInActiveTags } from "../api/tags";
 import LinkForm from "./main/LinkForm";
 import ReadingLink from "./main/ReadingLink";
 import Tag from "./main/Tag";
@@ -13,10 +14,7 @@ const Main = (): JSX.Element => {
   const [sort, setSort] = useState<string>("none");
   const [activeTags, setActiveTags] = useState<string[]>([]);
 
-  const isLinkTagsInActiveTags = (linkTags: string[]): boolean =>
-    linkTags.findIndex((linkTag) => activeTags.includes(linkTag)) >= 0;
-
-  const filteredLinks = links
+  const activeLinks = links
     .filter((link) => {
       switch (show) {
         case "all":
@@ -45,31 +43,22 @@ const Main = (): JSX.Element => {
       }
     });
 
-  const TagsComponent = filteredLinks
-    .reduce((arr: string[], link) => {
-      const newArr = [...arr];
-      link.tags.forEach((tag) => {
-        if (!newArr.includes(tag)) {
-          newArr.push(tag);
-        }
-      });
-      return newArr;
-    }, [])
-    .map((tag) => <Tag tag={tag} key={tag} setFilterTags={setActiveTags} />);
+  const TagsComponent = getTagsFromActiveLinks(activeLinks).map((tag) => (
+    <Tag tag={tag} key={tag} setFilterTags={setActiveTags} />
+  ));
 
-  const LinksComponent = filteredLinks
-    .filter(
-      (link) => activeTags.length === 0 || isLinkTagsInActiveTags(link.tags)
-    )
+  const LinksComponent = activeLinks
+    .filter((link) => isLinkTagInActiveTags(activeTags, link.tags))
     .map((link) => (
       <ReadingLink key={link._id} link={link} setLinks={setLinks} />
     ));
 
+  // Reset active tags when you delete the last active link from a tag
   if (LinksComponent.length === 0 && activeTags.length > 0) {
     setActiveTags([]);
   }
 
-  const ListContent =
+  const ReadingListContent =
     links.length > 0 ? (
       <ul className="max-w-full">{LinksComponent}</ul>
     ) : (
@@ -100,7 +89,7 @@ const Main = (): JSX.Element => {
         {isLoading ? (
           <ul className="max-w-full">{LoadingContent}</ul>
         ) : (
-          ListContent
+          ReadingListContent
         )}
       </div>
     </main>
