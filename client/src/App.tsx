@@ -1,8 +1,8 @@
-import React, { Suspense, useEffect, useState, useMemo } from "react";
+import React, { Suspense, useState, useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import { checkAuth } from "./api/apiUser";
-import UserContext from "./context/UserContext";
+import Navbar from "./components/Navbar";
+import { UserContext, UserContextProvider } from "./context/UserContext";
 import RequireAuth from "./components/common/RequireAuth";
 import OnlyNonAuth from "./components/common/OnlyNonAuth";
 import Loading from "./components/Loading";
@@ -14,8 +14,8 @@ const NotFound = React.lazy(() => import("./components/NotFound"));
 const LoginError = React.lazy(() => import("./components/LoginError"));
 
 const App = (): JSX.Element => {
-  const [userId, setUserId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { setUserId } = useContext(UserContext);
 
   useEffect(() => {
     checkAuth().then((data) => {
@@ -31,48 +31,48 @@ const App = (): JSX.Element => {
     });
   }, []);
 
-  const UserContextValue = useMemo(() => ({ userId, setUserId }), [userId]);
-
   return (
-    <UserContext.Provider value={UserContextValue}>
+    <UserContextProvider>
       <div className="bg-gray-primary text-white min-h-screen">
-        <Navbar />
         {isLoading ? (
           <Loading />
         ) : (
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <RequireAuth>
-                    <Main />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  <OnlyNonAuth>
-                    <Login />
-                  </OnlyNonAuth>
-                }
-              />
-              <Route
-                path="/register"
-                element={
-                  <OnlyNonAuth>
-                    <Register />
-                  </OnlyNonAuth>
-                }
-              />
-              <Route path="oauth-login" element={<LoginError />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+          <>
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <RequireAuth>
+                      <Main />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <OnlyNonAuth>
+                      <Login />
+                    </OnlyNonAuth>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <OnlyNonAuth>
+                      <Register />
+                    </OnlyNonAuth>
+                  }
+                />
+                <Route path="oauth-login" element={<LoginError />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </>
         )}
       </div>
-    </UserContext.Provider>
+    </UserContextProvider>
   );
 };
 

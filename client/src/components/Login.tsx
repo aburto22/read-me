@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "../api/apiUser";
-import UserContext from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { validateEmail } from "../helpers/forms";
 
 const Login = (): JSX.Element => {

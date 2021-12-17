@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import UserContext from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { userLogout, getUsername } from "../api/apiUser";
 import Svg from "./common/svg";
 
