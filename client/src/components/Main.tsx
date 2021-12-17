@@ -11,7 +11,7 @@ const Main = (): JSX.Element => {
   const [links, setLinks] = useState<ILink[]>([]);
   const [show, setShow] = useState<string>("all");
   const [sort, setSort] = useState<string>("none");
-  const [filterTags, setFilterTags] = useState<string[]>([]);
+  const [activeTags, setActiveTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -24,9 +24,9 @@ const Main = (): JSX.Element => {
     });
   }, []);
 
-  const checkTagsInFilterTags = (tags: string[]): boolean =>
-    tags.reduce(
-      (bool: boolean, tag) => bool || filterTags.includes(tag),
+  const isLinkTagsInActiveTags = (linkTags: string[]): boolean =>
+    linkTags.reduce(
+      (bool: boolean, linkTag) => bool || activeTags.includes(linkTag),
       false
     );
 
@@ -69,16 +69,18 @@ const Main = (): JSX.Element => {
       });
       return newArr;
     }, [])
-    .map((tag) => <Tag tag={tag} key={tag} setFilterTags={setFilterTags} />);
+    .map((tag) => <Tag tag={tag} key={tag} setFilterTags={setActiveTags} />);
 
   const LinksComponent = filteredLinks
-    .filter((link) => !filterTags.length || checkTagsInFilterTags(link.tags))
+    .filter(
+      (link) => activeTags.length === 0 || isLinkTagsInActiveTags(link.tags)
+    )
     .map((link) => (
       <ReadingLink key={link._id} link={link} setLinks={setLinks} />
     ));
 
-  if (LinksComponent.length === 0 && filterTags.length > 0) {
-    setFilterTags([]);
+  if (LinksComponent.length === 0 && activeTags.length > 0) {
+    setActiveTags([]);
   }
 
   const ListContent =

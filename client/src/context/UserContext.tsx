@@ -1,12 +1,15 @@
-import { useState, useMemo, createContext, Dispatch } from "react";
+import { useState, useEffect, useMemo, createContext, Dispatch } from "react";
+import { checkAuth } from "../api/apiUser";
 
 interface IUserContext {
   userId: string;
+  isLoading: boolean;
   setUserId: Dispatch<React.SetStateAction<string>>;
 }
 
 const initial = {
   userId: "",
+  isLoading: true,
   setUserId: () => {
     throw new Error("No user context available.");
   },
@@ -20,8 +23,25 @@ export const UserContextProvider = ({
   children: JSX.Element;
 }): JSX.Element => {
   const [userId, setUserId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const UserContextValue = useMemo(() => ({ userId, setUserId }), [userId]);
+  useEffect(() => {
+    checkAuth().then((data) => {
+      setIsLoading(false);
+      if (data instanceof Error) {
+        throw data;
+      }
+
+      if (data) {
+        setUserId(data);
+      }
+    });
+  }, []);
+
+  const UserContextValue = useMemo(
+    () => ({ userId, setUserId, isLoading }),
+    [userId, isLoading]
+  );
 
   return (
     <UserContext.Provider value={UserContextValue}>
