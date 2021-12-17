@@ -1,13 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
+import { LinksContext } from "../../context/LinksContext";
 import { addLink } from "../../api/apiLinks";
 import Svg from "../common/svg";
 import { tagsStringToArr } from "../../api/tags";
 
-type LinkFormProps = {
-  setLinks: (links: ILink[]) => void;
-};
-
-const LinkForm = ({ setLinks }: LinkFormProps): JSX.Element => {
+const LinkForm = (): JSX.Element => {
+  const { setLinks } = useContext(LinksContext);
   const [link, setLink] = useState<string>("");
   const [tags, setTags] = useState<string>("");
   const [isTagsShowing, setIsTagsShowing] = useState<boolean>(false);

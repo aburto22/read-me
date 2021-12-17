@@ -29,7 +29,8 @@ export const UserContextProvider = ({
     checkAuth().then((data) => {
       setIsLoading(false);
       if (data instanceof Error) {
-        throw data;
+        console.error(data);
+        return;
       }
 
       if (data) {

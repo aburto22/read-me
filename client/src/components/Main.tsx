@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { LinksContext } from "../context/LinksContext";
 import LinkForm from "./main/LinkForm";
-import { getLinks } from "../api/apiLinks";
 import ReadingLink from "./main/ReadingLink";
 import Tag from "./main/Tag";
 import Filters from "./main/Filters";
@@ -8,27 +8,13 @@ import Sort from "./main/Sort";
 import ReadingSkeleton from "./main/ReadingSkeleton";
 
 const Main = (): JSX.Element => {
-  const [links, setLinks] = useState<ILink[]>([]);
+  const { links, setLinks, isLoading } = useContext(LinksContext);
   const [show, setShow] = useState<string>("all");
   const [sort, setSort] = useState<string>("none");
   const [activeTags, setActiveTags] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    getLinks().then((data) => {
-      setIsLoading(false);
-      if (!(data instanceof Error)) {
-        setLinks(data);
-      }
-    });
-  }, []);
 
   const isLinkTagsInActiveTags = (linkTags: string[]): boolean =>
-    linkTags.reduce(
-      (bool: boolean, linkTag) => bool || activeTags.includes(linkTag),
-      false
-    );
+    linkTags.findIndex((linkTag) => activeTags.includes(linkTag)) >= 0;
 
   const filteredLinks = links
     .filter((link) => {
@@ -99,7 +85,7 @@ const Main = (): JSX.Element => {
       <div className="flex items-center mt-8 max-w-sm w-full mx-auto xl:mr-12 xl:ml-0 relative xl:h-screen-navbar xl:mt-navbar">
         <div className="xl:fixed w-full max-w-sm xl:min-h-form-link">
           <h1 className="text-2xl mb-6 text-center">Read My List</h1>
-          <LinkForm setLinks={setLinks} />
+          <LinkForm />
           <Filters show={show} setShow={setShow} />
           <Sort sort={sort} setSort={setSort} />
           {TagsComponent.length > 0 && (
