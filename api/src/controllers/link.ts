@@ -154,6 +154,8 @@ export const updateLink = async (
 
     const data: IRequestUpdateLink = req.body;
 
+    console.log("data: ", data);
+
     const { linkId } = data;
 
     const doc: IDBUser | null = await User.findById(userId).exec();
