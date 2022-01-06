@@ -91,11 +91,11 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
 
   return (
     <li
-      className={`border border-gray-300 rounded flex mb-1 bg-gray-dark min-h-reading ${
+      className={`border border-gray-300 rounded flex mb-1 bg-gray-dark min-h-reading max-w-full ${
         read && "border-green-500"
       }`}
     >
-      <div className="flex relative">
+      <div className="flex relative flex-1 overflow-hidden">
         <div className="w-20 h-full rounded-l hidden sm:flex bg-blue-image flex-shrink-0 sm:items-center sm:justify-center">
           {link.image ? (
             <img
@@ -107,7 +107,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
             <p className="text-5xl text-white">{link.name[0]}</p>
           )}
         </div>
-        <div className="mr-2 flex-grow py-2 pl-3 max-w-list-small sm:max-w-list-reg flex flex-col justify-center">
+        <div className="mr-2 flex-shrink py-2 pl-3 flex flex-col justify-center overflow-hidden">
           <h2
             className="text-sm font-bold overflow-ellipsis overflow-hidden whitespace-nowrap"
             dangerouslySetInnerHTML={{ __html: link.name }}
@@ -123,7 +123,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
             {!isEditingTags && <div className="absolute inset-0" />}
           </a>
           <p
-            className="text-xs break-normal max-w-xxs sm:max-w-xs line-clamp-2"
+            className="text-xs break-normal line-clamp-2"
             dangerouslySetInnerHTML={{ __html: link.description }}
           />
           <div
@@ -161,7 +161,7 @@ const ReadingLink = ({ link, setLinks }: IReadingLinkParams): JSX.Element => {
         </div>
       </div>
       <div
-        className={`flex flex-col justify-between items-center w-14 py-2 px-1 border-l ml-auto flex-shrink-0 ${
+        className={`flex flex-col justify-between items-center w-14 py-2 px-1 border-l flex-shrink-0 ${
           read ? "border-green-500" : "border-gray-300"
         }`}
       >
